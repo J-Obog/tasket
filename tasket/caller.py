@@ -12,7 +12,7 @@ class Caller():
         pass
 
     def close(self):
-        pass
+        self._client.disconnect()
         
     def _handle_ack(ack_msg: bytes):
         pass

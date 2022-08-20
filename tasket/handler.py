@@ -8,7 +8,7 @@ class Handler:
         self._client.connect(url, headers)
 
     def close(self):
-        pass
+        self._disconnect()
 
     def _handle_ack(ack_msg: bytes):
         pass
