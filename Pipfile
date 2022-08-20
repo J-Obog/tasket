@@ -5,6 +5,7 @@ name = "pypi"
 
 [packages]
 python-socketio = "*"
+dacite = "*"
 
 [dev-packages]
 
