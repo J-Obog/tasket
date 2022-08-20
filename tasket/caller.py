@@ -1,21 +1,10 @@
 from datetime import datetime
 from typing import Callable
-import socketio
+from .base import Client
 
-class Caller():
+class Caller(Client):
     def __init__(self, url: str, channel: str, key: str, callback: Callable):
-        headers = {"authorization": key, "client-type": "CALLER", "channel": channel}
-        self._client = socketio.Client()
-        self._client.connect(url, headers)
+        super().__init__(url, "CALLER", channel, key)
 
     def do(body: bytes, at: datetime):
         pass
-
-    def close(self):
-        self._client.disconnect()
-        
-    def _handle_ack(ack_msg: bytes):
-        pass
-
-
-

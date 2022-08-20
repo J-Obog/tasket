@@ -1,14 +1,9 @@
 from typing import Callable
-import socketio
+from .base import Client
 
-class Handler:
+class Handler(Client):
     def __init__(self, url: str, channel: str, key: str, callback: Callable):
-        headers = {"authorization": key, "client-type": "HANDLER", "channel": channel}
-        self._client = socketio.Client()
-        self._client.connect(url, headers)
-
-    def close(self):
-        self._disconnect()
+        super().__init__(url, "HANDLER", channel, key)
 
     def _handle_ack(ack_msg: bytes):
         pass
