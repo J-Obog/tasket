@@ -5,16 +5,18 @@ from __future__ import annotations
 import json
 
 @dataclass
-class Task:
+class Ack:
     id: str
+    task_id: str
+    success: bool
     body: Dict[str, any]
-    exec_at: datetime
     sent_at: datetime
+    delta: int
 
     def to_json(self) -> bytes:
         return bytes(json.dumps(self.__dict__), 'utf-8')
 
     @classmethod
-    def from_json(cls, payload: bytes) -> Task:
+    def from_json(cls, payload: bytes) -> Ack:
         obj = json.loads(payload)
-        return Task(**obj)
+        return Ack(**obj)
