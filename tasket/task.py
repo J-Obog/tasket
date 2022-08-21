@@ -6,6 +6,6 @@ from typing import Dict
 @dataclass
 class Task(DataClassJsonMixin):
     id: str
-    body: Dict[str, any]
+    body: bytes
     exec_at: datetime
     sent_at: datetime

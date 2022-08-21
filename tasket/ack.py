@@ -8,6 +8,6 @@ class Ack(DataClassJsonMixin):
     id: str
     task_id: str
     success: bool
-    body: Dict[str, any]
+    body: bytes
     sent_at: datetime
     delta: int

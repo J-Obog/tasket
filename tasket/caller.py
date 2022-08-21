@@ -2,7 +2,6 @@ from datetime import datetime
 from typing import Callable
 from .ack import Ack
 from .base import Client
-from copy import deepcopy
 import json
 
 AckFunc = Callable[[Ack], None]
@@ -13,8 +12,8 @@ class Caller(Client):
         self._client.on("message", self._handle_ack)
         self._fn = fn
 
-    def do(body: bytes, at: datetime):
-        pass
+    def do(self, body: bytes, at: datetime):
+        self._client.send(json.dumps({"body": body, "at": at}))
 
     def _handle_ack(self, payload: bytes) -> bytes:
         if self._fn:
