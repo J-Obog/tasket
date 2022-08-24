@@ -1,7 +1,7 @@
 import socketio
 
 class Client:
-    def __init__(self, url: str, type: str, channel: str, key: str):
+    def __init__(self, url: str, type: str, channel: str, key: str = ""):
         headers = {"authorization": key, "client-type": type, "channel": channel}
         self._client = socketio.Client()
         self._client.connect(url, headers)

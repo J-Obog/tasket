@@ -18,6 +18,6 @@ class Caller(Client):
     def _handle_ack(self, payload: bytes) -> bytes:
         if self._fn:
             ack = Ack.from_json(payload)
-            self._fn(ack)
+            self._fn(ack) 
         
         return bytes("OK") 

@@ -15,4 +15,3 @@ class Handler(Client):
         task = Task.from_json(payload)
         res, success = self._fn(task)
         return bytes(json.dumps({"res": res, "success": success}))
-
