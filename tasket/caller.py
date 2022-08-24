@@ -7,7 +7,7 @@ import json
 AckFunc = Callable[[Ack], None]
 
 class Caller(Client):
-    def __init__(self, url: str, channel: str, key: str, fn: AckFunc = None):
+    def __init__(self, url: str, channel: str, key: str = "", fn: AckFunc = None):
         super().__init__(url, "CALLER", channel, key)
         self._client.on("message", self._handle_ack)
         self._fn = fn
