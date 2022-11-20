@@ -10,6 +10,7 @@ pylint = {extras = ["options"], version = "*"}
 pylint = "*"
 pytest = "*"
 mypy = "*"
+black = "*"
 
 [requires]
 python_version = "3.10"
