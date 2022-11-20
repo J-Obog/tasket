@@ -1,0 +1,23 @@
+name: tests
+
+on:
+  push:
+
+jobs:
+  MyPy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checking out Code
+      - uses: actions/checkout@v3
+      - name: Setting up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.10
+      - name: Install dependencies
+        run: |
+          pip install pipenv
+          pipenv install --dev
+      - name: MyPy Static Type Check
+        run: |
+          pipenv run python mypy tasket test
