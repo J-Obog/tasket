@@ -12,6 +12,7 @@ class TaskStatus(IntEnum):
 @dataclass
 class Task:
     id: str
+    user_id: str
     name: str
     status: TaskStatus
     max_timeout: int
@@ -23,3 +24,12 @@ class Task:
     completed_at: Optional[int]
     created_at: int
     updated_at: int
+
+
+@dataclass
+class TaskFilter:
+    name: Optional[str] = None
+    status: Optional[TaskStatus] = None
+    created_after: Optional[int] = None
+    created_before: Optional[int] = None
+
