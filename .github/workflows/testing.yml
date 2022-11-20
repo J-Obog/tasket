@@ -9,7 +9,7 @@ jobs:
 
     steps:
       - name: Checking out Code
-      - uses: actions/checkout@v3
+        uses: actions/checkout@v3
       - name: Setting up Python
         uses: actions/setup-python@v4
         with:
