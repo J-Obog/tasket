@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from tasket.data import Task, User, Log, TaskFilter, LogFilter
+from tasket.models import Task, User, Log, TaskFilter, LogFilter
 from typing import Optional, List
 
 class UserStore(ABC):
