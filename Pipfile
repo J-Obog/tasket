@@ -5,6 +5,7 @@ name = "pypi"
 
 [packages]
 pylint = {extras = ["options"], version = "*"}
+flask = "*"
 
 [dev-packages]
 pylint = "*"
