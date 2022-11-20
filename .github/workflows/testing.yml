@@ -20,4 +20,4 @@ jobs:
           pipenv install --dev
       - name: MyPy Static Type Check
         run: |
-          pipenv run python mypy tasket test
+          pipenv run mypy tasket test
