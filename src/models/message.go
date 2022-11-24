@@ -5,3 +5,8 @@ type Message struct {
 	Data      []byte
 	Timestamp int64
 }
+
+type ScheduledTask struct {
+	TaskId     string
+	TaskConfig TaskConfig
+}

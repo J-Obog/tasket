@@ -16,11 +16,11 @@ func NewUserManager(userStore store.UserStore) *UserManager {
 	}
 }
 
-func (this *UserManager) GetUserById(id string) *models.User {
+func (this *UserManager) GetUserById(id string) (*models.User, error) {
 	return this.userStore.GetById(id)
 }
 
-func (this *UserManager) CreateUser(userReq models.UserRequest) {
+func (this *UserManager) CreateUser(userReq models.UserRequest) error {
 	now := utils.TimeNow()
 	id := utils.GenerateUUID()
 	hashedPswd := utils.GenerateHash(userReq.Password)
@@ -33,7 +33,7 @@ func (this *UserManager) CreateUser(userReq models.UserRequest) {
 		UpdatedAt: now,
 	}
 
-	this.userStore.Insert(user)
+	return this.userStore.Insert(user)
 }
 
 func (this *UserManager) DeleteUser(id string) {

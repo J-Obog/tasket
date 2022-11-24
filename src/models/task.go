@@ -10,16 +10,20 @@ const (
 	TaskStatus_PENDING              = 4
 )
 
+type TaskConfig struct {
+	MaxTimeout int64
+	MaxMemory  int64
+	Commands   []string
+	Environ    map[string]string
+	SourceMeta map[string]string
+}
+
 type Task struct {
 	Id          string
 	UserId      string
 	Name        string
 	Status      TaskStatus
-	MaxTimeout  int64
-	MaxMemory   int64
-	Commands    []string
-	Environ     map[string]string
-	SourceMeta  map[string]string
+	Config      TaskConfig
 	StartedAt   *int64
 	CompletedAt *int64
 	CreatedAt   int64
@@ -27,12 +31,8 @@ type Task struct {
 }
 
 type TaskRequest struct {
-	Name       string
-	MaxTimeout int64
-	MaxMemory  int64
-	Commands   []string
-	Environ    map[string]string
-	SourceMeta map[string]string
+	Name   string
+	Config TaskConfig
 }
 
 type TaskFilter struct {

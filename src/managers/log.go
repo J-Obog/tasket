@@ -16,15 +16,15 @@ func NewLogManager(logStore store.LogStore) *LogManager {
 	}
 }
 
-func (this *LogManager) GetLogsByTask(taskId string) []models.Log {
+func (this *LogManager) GetLogsByTask(taskId string) ([]models.Log, error) {
 	return this.logStore.GetByTask(taskId)
 }
 
-func (this *LogManager) GetLogsByFilter(taskId string, filter models.LogFilter) []models.Log {
+func (this *LogManager) GetLogsByFilter(taskId string, filter models.LogFilter) ([]models.Log, error) {
 	return this.logStore.GetByFilter(taskId, filter)
 }
 
-func (this *LogManager) CreateLog(taskId string, logReq models.LogRequest) {
+func (this *LogManager) CreateLog(taskId string, logReq models.LogRequest) error {
 	id := utils.GenerateUUID()
 	now := utils.TimeNow()
 
@@ -37,5 +37,5 @@ func (this *LogManager) CreateLog(taskId string, logReq models.LogRequest) {
 		CreatedAt: now,
 	}
 
-	this.logStore.Insert(log)
+	return this.logStore.Insert(log)
 }
