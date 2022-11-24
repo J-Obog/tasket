@@ -1,10 +1,20 @@
 package models
 
+type TaskStatus uint
+
+const (
+	TaskStatus_UNKNOWN   TaskStatus = 0
+	TaskStatus_COMPLETED            = 1
+	TaskStatus_STOPPED              = 2
+	TaskStatus_RUNNING              = 3
+	TaskStatus_PENDING              = 4
+)
+
 type Task struct {
 	Id          string
 	UserId      string
 	Name        string
-	Status      string
+	Status      TaskStatus
 	MaxTimeout  int64
 	MaxMemory   int64
 	Commands    []string
@@ -27,7 +37,7 @@ type TaskRequest struct {
 
 type TaskFilter struct {
 	Name          *string
-	Status        *string
+	Status        *TaskStatus
 	CreatedAfter  *int64
 	CreatedBefore *int64
 }
