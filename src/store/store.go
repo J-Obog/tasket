@@ -13,7 +13,7 @@ type TaskStore interface {
 	GetByUser(userId string) []models.Task
 	GetByFilter(userId string, filter models.TaskFilter) []models.Task
 	UpdateName(id string, name string)
-	UpdateStatus(id string, status string)
+	UpdateStatus(id string, status models.TaskStatus)
 	Insert(task models.Task)
 }
 

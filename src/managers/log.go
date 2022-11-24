@@ -3,6 +3,7 @@ package managers
 import (
 	"github.com/J-Obog/tasket/src/models"
 	"github.com/J-Obog/tasket/src/store"
+	"github.com/J-Obog/tasket/src/utils"
 )
 
 type LogManager struct {
@@ -16,13 +17,25 @@ func NewLogManager(logStore store.LogStore) *LogManager {
 }
 
 func (this *LogManager) GetLogsByTask(taskId string) []models.Log {
-	return nil
+	return this.logStore.GetByTask(taskId)
 }
 
 func (this *LogManager) GetLogsByFilter(taskId string, filter models.LogFilter) []models.Log {
-	return nil
+	return this.logStore.GetByFilter(taskId, filter)
 }
 
 func (this *LogManager) CreateLog(taskId string, logReq models.LogRequest) {
+	id := utils.GenerateUUID()
+	now := utils.TimeNow()
 
+	log := models.Log{
+		Id:        id,
+		TaskId:    logReq.TaskId,
+		Source:    logReq.Source,
+		Content:   logReq.Content,
+		Timestamp: logReq.Timestamp,
+		CreatedAt: now,
+	}
+
+	this.logStore.Insert(log)
 }
