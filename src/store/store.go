@@ -4,6 +4,7 @@ import "github.com/J-Obog/tasket/src/models"
 
 type UserStore interface {
 	GetById(id string) (*models.User, error)
+	GetByEmail(email string) (*models.User, error)
 	Insert(user models.User) error
 	Delete(id string) error
 }

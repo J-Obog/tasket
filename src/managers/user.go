@@ -20,6 +20,10 @@ func (this *UserManager) GetUserById(id string) (*models.User, error) {
 	return this.userStore.GetById(id)
 }
 
+func (this *UserManager) GetUserByEmail(email string) (*models.User, error) {
+	return this.userStore.GetByEmail(email)
+}
+
 func (this *UserManager) CreateUser(userReq models.UserRequest) error {
 	now := utils.TimeNow()
 	id := utils.GenerateUUID()
@@ -36,6 +40,6 @@ func (this *UserManager) CreateUser(userReq models.UserRequest) error {
 	return this.userStore.Insert(user)
 }
 
-func (this *UserManager) DeleteUser(id string) {
+func (this *UserManager) DeleteUser(id string) error {
 
 }
