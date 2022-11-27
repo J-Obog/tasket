@@ -9,24 +9,24 @@ const (
 )
 
 type Log struct {
-	Id        string
-	TaskId    string
-	Source    LogSource
-	Content   []byte
-	CreatedAt int64
+	Id        string    `json:"id"`
+	TaskId    string    `json:"taskId"`
+	Source    LogSource `json:"source"`
+	Content   []byte    `json:"content"`
+	CreatedAt int64     `json:"createdAt"`
 }
 
 type LogRequest struct {
-	TaskId  string
-	Source  LogSource
-	Content []byte
+	TaskId  string    `json:"taskId"`
+	Source  LogSource `json:"source"`
+	Content []byte    `json:"content"`
 }
 
 type LogFilter struct {
-	Source        *LogSource
-	Contains      []byte
-	CreatedAfter  *int64
-	CreatedBefore *int64
-	First         *int64
-	Last          *int64
+	Source        *LogSource `json:"source"`
+	Contains      []byte     `json:"contains"`
+	CreatedAfter  *int64     `json:"createdAfter"`
+	CreatedBefore *int64     `json:"createdBefore"`
+	First         *int64     `json:"first"`
+	Last          *int64     `json:"last"`
 }

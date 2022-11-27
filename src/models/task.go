@@ -19,25 +19,25 @@ type TaskConfig struct {
 }
 
 type Task struct {
-	Id          string
-	UserId      string
-	Name        string
-	Status      TaskStatus
-	Config      TaskConfig
-	StartedAt   *int64
-	CompletedAt *int64
-	CreatedAt   int64
-	UpdatedAt   int64
+	Id          string     `json:"id"`
+	UserId      string     `json:"userId"`
+	Name        string     `json:"name"`
+	Status      TaskStatus `json:"status"`
+	Config      TaskConfig `json:"config"`
+	StartedAt   *int64     `json:"startedAt"`
+	CompletedAt *int64     `json:"completedAt"`
+	CreatedAt   int64      `json:"createdAt"`
+	UpdatedAt   int64      `json:"updatedAt"`
 }
 
 type TaskRequest struct {
-	Name   string
-	Config TaskConfig
+	Name   string     `json:"name"`
+	Config TaskConfig `json:"config"`
 }
 
 type TaskFilter struct {
-	Name          *string
-	Status        *TaskStatus
-	CreatedAfter  *int64
-	CreatedBefore *int64
+	Name          *string     `json:"name"`
+	Status        *TaskStatus `json:"status"`
+	CreatedAfter  *int64      `json:"createdAfter"`
+	CreatedBefore *int64      `json:"createdBefore"`
 }
