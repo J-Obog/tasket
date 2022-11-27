@@ -13,15 +13,13 @@ type Log struct {
 	TaskId    string
 	Source    LogSource
 	Content   []byte
-	Timestamp int64
 	CreatedAt int64
 }
 
 type LogRequest struct {
-	TaskId    string
-	Source    LogSource
-	Content   []byte
-	Timestamp int64
+	TaskId  string
+	Source  LogSource
+	Content []byte
 }
 
 type LogFilter struct {

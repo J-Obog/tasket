@@ -30,14 +30,10 @@ func (this *TaskResource) GetTask(req models.RestRequest) models.RestResponse {
 		return utils.MakeServerError()
 	}
 
-	body, err := json.Marshal(&task)
-
-	if err != nil {
-		return utils.MakeServerError()
-	}
-
 	return models.RestResponse{
-		Body:   body,
+		Object: map[string]interface{}{
+			"data": &task,
+		},
 		Status: http.StatusOK,
 	}
 }
@@ -51,14 +47,10 @@ func (this *TaskResource) GetTasks(req models.RestRequest) models.RestResponse {
 		return utils.MakeServerError()
 	}
 
-	body, err := json.Marshal(&tasks)
-
-	if err != nil {
-		return utils.MakeServerError()
-	}
-
 	return models.RestResponse{
-		Body:   body,
+		Object: map[string]interface{}{
+			"data": tasks,
+		},
 		Status: http.StatusOK,
 	}
 }
@@ -82,14 +74,10 @@ func (this *TaskResource) GetTaskLogs(req models.RestRequest) models.RestRespons
 		return utils.MakeServerError()
 	}
 
-	body, err := json.Marshal(&logs)
-
-	if err != nil {
-		return utils.MakeServerError()
-	}
-
 	return models.RestResponse{
-		Body:   body,
+		Object: map[string]interface{}{
+			"data": logs,
+		},
 		Status: http.StatusOK,
 	}
 }
@@ -104,7 +92,9 @@ func (this *TaskResource) StopTask(req models.RestRequest) models.RestResponse {
 	}
 
 	return models.RestResponse{
-		Body:   make([]byte, 0),
+		Object: map[string]interface{}{
+			"message": "Task stopped successfully",
+		},
 		Status: http.StatusOK,
 	}
 }
@@ -134,7 +124,9 @@ func (this *TaskResource) CreateTask(req models.RestRequest) models.RestResponse
 	}
 
 	return models.RestResponse{
-		Body:   make([]byte, 0),
+		Object: map[string]interface{}{
+			"message": "Task creaetd successfully",
+		},
 		Status: http.StatusOK,
 	}
 }

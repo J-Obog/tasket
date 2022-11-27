@@ -33,7 +33,6 @@ func (this *LogManager) CreateLog(taskId string, logReq models.LogRequest) error
 		TaskId:    logReq.TaskId,
 		Source:    logReq.Source,
 		Content:   logReq.Content,
-		Timestamp: logReq.Timestamp,
 		CreatedAt: now,
 	}
 

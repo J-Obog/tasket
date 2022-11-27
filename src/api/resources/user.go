@@ -27,14 +27,10 @@ func (this *UserResource) GetUser(req models.RestRequest) models.RestResponse {
 	if err != nil {
 		return utils.MakeServerError()
 	}
-
-	body, err := json.Marshal(&user)
-	if err != nil {
-		return utils.MakeServerError()
-	}
-
 	return models.RestResponse{
-		Body:   body,
+		Object: map[string]interface{}{
+			"data": &user,
+		},
 		Status: http.StatusOK,
 	}
 }
@@ -49,7 +45,9 @@ func (this *UserResource) DeleteUser(req models.RestRequest) models.RestResponse
 	}
 
 	return models.RestResponse{
-		Body:   make([]byte, 0),
+		Object: map[string]interface{}{
+			"message": "User deleted successfully",
+		},
 		Status: http.StatusOK,
 	}
 }
@@ -72,7 +70,9 @@ func (this *UserResource) CreateUser(req models.RestRequest) models.RestResponse
 	}
 
 	return models.RestResponse{
-		Body:   make([]byte, 0),
+		Object: map[string]interface{}{
+			"message": "User created successfully",
+		},
 		Status: http.StatusOK,
 	}
 }

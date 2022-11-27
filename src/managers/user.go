@@ -41,5 +41,5 @@ func (this *UserManager) CreateUser(userReq models.UserRequest) error {
 }
 
 func (this *UserManager) DeleteUser(id string) error {
-
+	return nil
 }

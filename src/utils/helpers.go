@@ -24,7 +24,9 @@ func CurrentUserId(req models.RestRequest) string {
 
 func MakeServerError() models.RestResponse {
 	return models.RestResponse{
-		Body:   make([]byte, 0),
+		Object: map[string]interface{}{
+			"message": "Internal Server Error",
+		},
 		Status: http.StatusInternalServerError,
 	}
 }

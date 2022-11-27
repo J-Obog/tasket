@@ -8,6 +8,6 @@ type RestRequest struct {
 }
 
 type RestResponse struct {
-	Body   []byte
+	Object map[string]interface{}
 	Status int
 }
