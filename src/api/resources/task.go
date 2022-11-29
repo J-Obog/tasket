@@ -58,9 +58,9 @@ func (this *TaskResource) GetTasks(req models.RestRequest) models.RestResponse {
 func (this *TaskResource) GetTaskLogs(req models.RestRequest) models.RestResponse {
 	id := utils.TaskIdParam()
 
-	var logFilter models.LogFilter
+	var options models.LogOptions
 
-	err := json.Unmarshal(req.Body, &logFilter)
+	err := json.Unmarshal(req.Body, &options)
 
 	if err != nil {
 		return utils.MakeServerError()
@@ -68,7 +68,7 @@ func (this *TaskResource) GetTaskLogs(req models.RestRequest) models.RestRespons
 
 	//validate log filter
 
-	logs, err := this.logManager.GetLogsByFilter(id, logFilter)
+	logs, err := this.logManager.GetLogsByFilter(id, options)
 
 	if err != nil {
 		return utils.MakeServerError()
@@ -107,9 +107,9 @@ func (this *TaskResource) UpdateTask(req models.RestRequest) models.RestResponse
 func (this *TaskResource) CreateTask(req models.RestRequest) models.RestResponse {
 	id := utils.CurrentUserId(req)
 
-	var taskReq models.TaskRequest
+	var newTask models.NewTask
 
-	err := json.Unmarshal(req.Body, &taskReq)
+	err := json.Unmarshal(req.Body, &newTask)
 
 	if err != nil {
 		return utils.MakeServerError()
@@ -117,7 +117,7 @@ func (this *TaskResource) CreateTask(req models.RestRequest) models.RestResponse
 
 	//validate task request
 
-	err = this.taskManager.CreateTask(id, taskReq)
+	err = this.taskManager.CreateTask(id, newTask)
 
 	if err != nil {
 		return utils.MakeServerError()

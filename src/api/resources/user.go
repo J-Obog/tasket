@@ -53,9 +53,9 @@ func (this *UserResource) DeleteUser(req models.RestRequest) models.RestResponse
 }
 
 func (this *UserResource) CreateUser(req models.RestRequest) models.RestResponse {
-	var userReq models.UserRequest
+	var newUser models.NewUser
 
-	err := json.Unmarshal(req.Body, &userReq)
+	err := json.Unmarshal(req.Body, &newUser)
 
 	if err != nil {
 		return utils.MakeServerError()
@@ -63,7 +63,7 @@ func (this *UserResource) CreateUser(req models.RestRequest) models.RestResponse
 
 	//validate user request
 
-	err = this.userManager.CreateUser(userReq)
+	err = this.userManager.CreateUser(newUser)
 
 	if err != nil {
 		return utils.MakeServerError()

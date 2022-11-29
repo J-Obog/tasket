@@ -12,14 +12,14 @@ type UserStore interface {
 type TaskStore interface {
 	GetById(id string) (*models.Task, error)
 	GetByUser(userId string) ([]models.Task, error)
-	GetByFilter(userId string, filter models.TaskFilter) ([]models.Task, error)
-	UpdateName(id string, name string) error
+	GetByFilter(userId string, options models.TaskOptions) ([]models.Task, error)
+	Update(id string, updatedTask models.UpdatedTask) error
 	UpdateStatus(id string, status models.TaskStatus) error
 	Insert(task models.Task) error
 }
 
 type LogStore interface {
 	GetByTask(taskId string) ([]models.Log, error)
-	GetByFilter(taskId string, filter models.LogFilter) ([]models.Log, error)
+	GetByFilter(taskId string, options models.LogOptions) ([]models.Log, error)
 	Insert(log models.Log) error
 }

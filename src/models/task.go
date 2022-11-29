@@ -30,12 +30,16 @@ type Task struct {
 	UpdatedAt   int64      `json:"updatedAt"`
 }
 
-type TaskRequest struct {
+type NewTask struct {
 	Name   string     `json:"name"`
 	Config TaskConfig `json:"config"`
 }
 
-type TaskFilter struct {
+type UpdatedTask struct {
+	Name string `json:"name"`
+}
+
+type TaskOptions struct {
 	Name          *string     `json:"name"`
 	Status        *TaskStatus `json:"status"`
 	CreatedAfter  *int64      `json:"createdAfter"`

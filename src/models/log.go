@@ -16,13 +16,13 @@ type Log struct {
 	CreatedAt int64     `json:"createdAt"`
 }
 
-type LogRequest struct {
-	TaskId  string    `json:"taskId"`
-	Source  LogSource `json:"source"`
-	Content []byte    `json:"content"`
+type NewLog struct {
+	TaskId  string
+	Source  LogSource
+	Content []byte
 }
 
-type LogFilter struct {
+type LogOptions struct {
 	Source        *LogSource `json:"source"`
 	Contains      []byte     `json:"contains"`
 	CreatedAfter  *int64     `json:"createdAfter"`

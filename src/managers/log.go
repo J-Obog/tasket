@@ -20,11 +20,11 @@ func (this *LogManager) GetLogsByTask(taskId string) ([]models.Log, error) {
 	return this.logStore.GetByTask(taskId)
 }
 
-func (this *LogManager) GetLogsByFilter(taskId string, filter models.LogFilter) ([]models.Log, error) {
+func (this *LogManager) GetLogsByFilter(taskId string, filter models.LogOptions) ([]models.Log, error) {
 	return this.logStore.GetByFilter(taskId, filter)
 }
 
-func (this *LogManager) CreateLog(taskId string, logReq models.LogRequest) error {
+func (this *LogManager) CreateLog(taskId string, logReq models.NewLog) error {
 	id := utils.GenerateUUID()
 	now := utils.TimeNow()
 

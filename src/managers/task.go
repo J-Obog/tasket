@@ -29,12 +29,12 @@ func (this *TaskManager) GetTasksByUser(userId string) ([]models.Task, error) {
 	return this.taskStore.GetByUser(userId)
 }
 
-func (this *TaskManager) GetTasksByFilter(userId string, filter models.TaskFilter) ([]models.Task, error) {
-	return this.taskStore.GetByFilter(userId, filter)
+func (this *TaskManager) GetTasksByFilter(userId string, options models.TaskOptions) ([]models.Task, error) {
+	return this.taskStore.GetByFilter(userId, options)
 }
 
-func (this *TaskManager) UpdateTaskName(id string, name string) error {
-	return this.taskStore.UpdateName(id, name)
+func (this *TaskManager) UpdateTask(id string, updatedTask models.UpdatedTask) error {
+	return this.taskStore.Update(id, updatedTask)
 }
 
 func (this *TaskManager) UpdateTaskStatus(id string, status models.TaskStatus) error {
@@ -45,15 +45,15 @@ func (this *TaskManager) StopTask(id string) error {
 	return nil
 }
 
-func (this *TaskManager) CreateTask(userId string, taskReq models.TaskRequest) error {
+func (this *TaskManager) CreateTask(userId string, newTask models.NewTask) error {
 	id := utils.GenerateUUID()
 	now := utils.TimeNow()
-	config := taskReq.Config
+	config := newTask.Config
 
 	task := models.Task{
 		Id:          id,
 		UserId:      userId,
-		Name:        taskReq.Name,
+		Name:        newTask.Name,
 		Status:      models.TaskStatus_PENDING,
 		Config:      config,
 		StartedAt:   nil,

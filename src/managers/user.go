@@ -24,7 +24,7 @@ func (this *UserManager) GetUserByEmail(email string) (*models.User, error) {
 	return this.userStore.GetByEmail(email)
 }
 
-func (this *UserManager) CreateUser(userReq models.UserRequest) error {
+func (this *UserManager) CreateUser(userReq models.NewUser) error {
 	now := utils.TimeNow()
 	id := utils.GenerateUUID()
 	hashedPswd := utils.GenerateHash(userReq.Password)
