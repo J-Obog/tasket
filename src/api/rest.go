@@ -1,5 +1,7 @@
 package api
 
+type RestHandler func(req RestRequest) (res RestResponse, status int)
+
 type RestRequest struct {
 	Url         string
 	UrlParams   map[string]interface{}
