@@ -1,6 +1,9 @@
 package managers
 
 import (
+	"fmt"
+
+	"github.com/J-Obog/tasket/src/logger"
 	"github.com/J-Obog/tasket/src/models"
 	"github.com/J-Obog/tasket/src/queue"
 	"github.com/J-Obog/tasket/src/store"
@@ -10,12 +13,14 @@ import (
 type TaskManager struct {
 	taskStore store.TaskStore
 	taskQueue queue.Queue
+	logger    logger.Logger
 }
 
-func NewTaskManager(taskStore store.TaskStore, taskQueue queue.Queue) *TaskManager {
+func NewTaskManager(taskStore store.TaskStore, taskQueue queue.Queue, logger logger.Logger) *TaskManager {
 	return &TaskManager{
 		taskStore: taskStore,
 		taskQueue: taskQueue,
+		logger:    logger,
 	}
 }
 
@@ -78,7 +83,11 @@ func (this *TaskManager) CreateTask(userId string, newTask models.NewTask) error
 	}
 
 	err = this.taskQueue.Push(&event)
-	//log error
+
+	if err != nil {
+		msg := fmt.Sprintf("Failed to push %s event for task %s", queue.EventType_TASK_SCHEDULED, id)
+		this.logger.Error(msg)
+	}
 
 	return nil
 }
