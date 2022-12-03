@@ -100,7 +100,6 @@ func (this *TaskResource) StopTask(req models.RestRequest) models.RestResponse {
 	}
 }
 
-// todo: implement
 func (this *TaskResource) UpdateTask(req models.RestRequest) models.RestResponse {
 	id := utils.TaskIdParam()
 
