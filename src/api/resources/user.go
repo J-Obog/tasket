@@ -8,7 +8,6 @@ import (
 	"github.com/J-Obog/tasket/src/api"
 	"github.com/J-Obog/tasket/src/managers"
 	"github.com/J-Obog/tasket/src/models"
-	"github.com/J-Obog/tasket/src/utils"
 )
 
 type UserResource struct {
@@ -22,7 +21,7 @@ func NewUserResource(userManager managers.UserManager) *UserResource {
 }
 
 func (this *UserResource) GetUser(req api.RestRequest) (api.RestResponse, int) {
-	id := utils.CurrentUserId(req)
+	id := api.UserId(req.Metadata)
 
 	user, err := this.userManager.GetUserById(id)
 
@@ -49,7 +48,7 @@ func (this *UserResource) GetUser(req api.RestRequest) (api.RestResponse, int) {
 }
 
 func (this *UserResource) DeleteUser(req api.RestRequest) (api.RestResponse, int) {
-	id := utils.CurrentUserId(req)
+	id := api.UserId(req.Metadata)
 
 	err := this.userManager.DeleteUser(id)
 

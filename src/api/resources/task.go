@@ -8,7 +8,6 @@ import (
 	"github.com/J-Obog/tasket/src/api"
 	"github.com/J-Obog/tasket/src/managers"
 	"github.com/J-Obog/tasket/src/models"
-	"github.com/J-Obog/tasket/src/utils"
 )
 
 type TaskResource struct {
@@ -53,7 +52,7 @@ func (this *TaskResource) GetTask(req api.RestRequest) (api.RestResponse, int) {
 func (this *TaskResource) GetTasks(req api.RestRequest) (api.RestResponse, int) {
 	var taskOptions models.TaskOptions
 
-	id := utils.CurrentUserId(req)
+	id := api.UserId(req.Metadata)
 
 	tasks, err := this.taskManager.GetTasksByFilter(id, taskOptions)
 
@@ -168,7 +167,7 @@ func (this *TaskResource) UpdateTask(req api.RestRequest) (api.RestResponse, int
 }
 
 func (this *TaskResource) CreateTask(req api.RestRequest) (api.RestResponse, int) {
-	id := utils.CurrentUserId(req)
+	id := api.UserId(req.Metadata)
 
 	var newTask models.NewTask
 
