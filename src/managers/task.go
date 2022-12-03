@@ -65,7 +65,7 @@ func (this *TaskManager) CreateTask(userId string, newTask models.NewTask) error
 		return err
 	}
 
-	event := models.TaskScheduledEvent{
+	event := queue.TaskScheduledEvent{
 		TaskId:     id,
 		TaskConfig: config,
 	}
