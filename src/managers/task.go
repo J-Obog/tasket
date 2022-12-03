@@ -23,10 +23,6 @@ func (this *TaskManager) GetTaskById(id string) (*models.Task, error) {
 	return this.taskStore.GetById(id)
 }
 
-func (this *TaskManager) GetTasksByUser(userId string) ([]models.Task, error) {
-	return this.taskStore.GetByUser(userId)
-}
-
 func (this *TaskManager) GetTasksByFilter(userId string, options models.TaskOptions) ([]models.Task, error) {
 	return this.taskStore.GetByFilter(userId, options)
 }
