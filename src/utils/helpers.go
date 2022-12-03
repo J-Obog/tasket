@@ -1,8 +1,6 @@
 package utils
 
 import (
-	"net/http"
-
 	"github.com/J-Obog/tasket/src/api"
 )
 
@@ -20,15 +18,6 @@ func GenerateHash(s string) []byte {
 
 func CurrentUserId(req api.RestRequest) string {
 	return ""
-}
-
-func MakeServerError() api.RestResponse {
-	return api.RestResponse{
-		Object: map[string]interface{}{
-			"message": "Internal Server Error",
-		},
-		Status: http.StatusInternalServerError,
-	}
 }
 
 func TaskIdParam() string {

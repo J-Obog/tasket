@@ -23,37 +23,52 @@ func NewTaskResource(taskManager managers.TaskManager, logManager managers.LogMa
 	}
 }
 
-func (this *TaskResource) GetTask(req api.RestRequest) api.RestResponse {
+func (this *TaskResource) GetTask(req api.RestRequest) (api.RestResponse, int) {
 	id := utils.TaskIdParam()
 
 	task, err := this.taskManager.GetTaskById(id)
 
 	if err != nil {
-		return utils.MakeServerError()
+		return api.ServerErrorResponse(), http.StatusInternalServerError
 	}
 
-	return api.RestResponse{
-		Object: &task,
-		Status: http.StatusOK,
+	if task == nil {
+		res := api.RestResponse{
+			Error: api.RestError{
+				Type:   "resource not found",
+				Detail: fmt.Sprintf("Task %s could not be found", id),
+			},
+		}
+
+		return res, http.StatusNotFound
 	}
+
+	res := api.RestResponse{
+		Data: &task,
+	}
+
+	return res, http.StatusOK
 }
 
-func (this *TaskResource) GetTasks(req api.RestRequest) api.RestResponse {
+func (this *TaskResource) GetTasks(req api.RestRequest) (api.RestResponse, int) {
+	var taskOptions models.TaskOptions
+
 	id := utils.CurrentUserId(req)
 
-	tasks, err := this.taskManager.GetTasksByUser(id)
+	tasks, err := this.taskManager.GetTasksByFilter(id, taskOptions)
 
 	if err != nil {
-		return utils.MakeServerError()
+		return api.ServerErrorResponse(), http.StatusInternalServerError
 	}
 
-	return api.RestResponse{
-		Object: tasks,
-		Status: http.StatusOK,
+	res := api.RestResponse{
+		Data: tasks,
 	}
+
+	return res, http.StatusOK
 }
 
-func (this *TaskResource) GetTaskLogs(req api.RestRequest) api.RestResponse {
+func (this *TaskResource) GetTaskLogs(req api.RestRequest) (api.RestResponse, int) {
 	id := utils.TaskIdParam()
 
 	var options models.LogOptions
@@ -61,7 +76,7 @@ func (this *TaskResource) GetTaskLogs(req api.RestRequest) api.RestResponse {
 	err := json.Unmarshal(req.Body, &options)
 
 	if err != nil {
-		return utils.MakeServerError()
+		return api.ServerErrorResponse(), http.StatusInternalServerError
 	}
 
 	//validate log filter
@@ -69,48 +84,50 @@ func (this *TaskResource) GetTaskLogs(req api.RestRequest) api.RestResponse {
 	logs, err := this.logManager.GetLogsByFilter(id, options)
 
 	if err != nil {
-		return utils.MakeServerError()
+		return api.ServerErrorResponse(), http.StatusInternalServerError
 	}
 
-	return api.RestResponse{
-		Object: logs,
-		Status: http.StatusOK,
+	res := api.RestResponse{
+		Data: logs,
 	}
+
+	return res, http.StatusOK
 }
 
-func (this *TaskResource) StopTask(req api.RestRequest) api.RestResponse {
+func (this *TaskResource) StopTask(req api.RestRequest) (api.RestResponse, int) {
 	id := utils.TaskIdParam()
 
 	task, err := this.taskManager.GetTaskById(id)
 
 	if err != nil {
-		return utils.MakeServerError()
+		return api.ServerErrorResponse(), http.StatusInternalServerError
 	}
 
 	if task != nil {
-		return api.RestResponse{
-			Object: map[string]interface{}{
-				"message": fmt.Sprintf("Task %s was not found", id),
+		res := api.RestResponse{
+			Error: api.RestError{
+				Type:   "not found",
+				Detail: fmt.Sprintf("Task %s was not found", id),
 			},
-			Status: http.StatusNotFound,
 		}
+
+		return res, http.StatusNotFound
 	}
 
 	err = this.taskManager.StopTask(id)
 
 	if err != nil {
-		return utils.MakeServerError()
+		return api.ServerErrorResponse(), http.StatusInternalServerError
 	}
 
-	return api.RestResponse{
-		Object: map[string]interface{}{
-			"message": fmt.Sprintf("Task %s is set to be stopped", id),
-		},
-		Status: http.StatusOK,
+	res := api.RestResponse{
+		Message: fmt.Sprintf("Task %s is set to be stopped", id),
 	}
+
+	return res, http.StatusOK
 }
 
-func (this *TaskResource) UpdateTask(req api.RestRequest) api.RestResponse {
+func (this *TaskResource) UpdateTask(req api.RestRequest) (api.RestResponse, int) {
 	id := utils.TaskIdParam()
 
 	var updatedTask models.UpdatedTask
@@ -118,38 +135,39 @@ func (this *TaskResource) UpdateTask(req api.RestRequest) api.RestResponse {
 	err := json.Unmarshal(req.Body, &updatedTask)
 
 	if err != nil {
-		return utils.MakeServerError()
+		return api.ServerErrorResponse(), http.StatusInternalServerError
 	}
 
 	task, err := this.taskManager.GetTaskById(id)
 	if err != nil {
-		return utils.MakeServerError()
+		return api.ServerErrorResponse(), http.StatusInternalServerError
 	}
 
 	if task == nil {
-		return api.RestResponse{
-			Object: map[string]interface{}{
-				"message": fmt.Sprintf("Task with id %s was not found", id),
+		res := api.RestResponse{
+			Error: api.RestError{
+				Type:   "not found",
+				Detail: fmt.Sprintf("Task %s was not found", id),
 			},
-			Status: http.StatusNotFound,
 		}
+
+		return res, http.StatusNotFound
 	}
 
 	err = this.taskManager.UpdateTask(id, updatedTask)
 
 	if err != nil {
-		return utils.MakeServerError()
+		return api.ServerErrorResponse(), http.StatusInternalServerError
 	}
 
-	return api.RestResponse{
-		Object: map[string]interface{}{
-			"message": "Task updated successfully",
-		},
-		Status: http.StatusOK,
+	res := api.RestResponse{
+		Message: fmt.Sprintf("Task %s updated successfully", id),
 	}
+
+	return res, http.StatusOK
 }
 
-func (this *TaskResource) CreateTask(req api.RestRequest) api.RestResponse {
+func (this *TaskResource) CreateTask(req api.RestRequest) (api.RestResponse, int) {
 	id := utils.CurrentUserId(req)
 
 	var newTask models.NewTask
@@ -157,7 +175,7 @@ func (this *TaskResource) CreateTask(req api.RestRequest) api.RestResponse {
 	err := json.Unmarshal(req.Body, &newTask)
 
 	if err != nil {
-		return utils.MakeServerError()
+		return api.ServerErrorResponse(), http.StatusInternalServerError
 	}
 
 	//validate task request
@@ -165,13 +183,12 @@ func (this *TaskResource) CreateTask(req api.RestRequest) api.RestResponse {
 	err = this.taskManager.CreateTask(id, newTask)
 
 	if err != nil {
-		return utils.MakeServerError()
+		return api.ServerErrorResponse(), http.StatusInternalServerError
 	}
 
-	return api.RestResponse{
-		Object: map[string]interface{}{
-			"message": "Task created successfully",
-		},
-		Status: http.StatusOK,
+	res := api.RestResponse{
+		Message: "Task created successfully",
 	}
+
+	return res, http.StatusOK
 }

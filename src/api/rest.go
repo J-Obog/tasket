@@ -7,7 +7,22 @@ type RestRequest struct {
 	Body        []byte
 }
 
+type RestError struct {
+	Type   string `json:"type"`
+	Detail string `json:"detail"`
+}
+
 type RestResponse struct {
-	Object interface{}
-	Status int
+	Data    interface{} `json:"data"`
+	Error   RestError   `json:"error"`
+	Message string      `json:"message"`
+}
+
+func ServerErrorResponse() RestResponse {
+	return RestResponse{
+		Error: RestError{
+			Type:   "server error",
+			Detail: "internal error occured while processing request",
+		},
+	}
 }

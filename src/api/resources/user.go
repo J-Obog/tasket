@@ -2,6 +2,7 @@ package resources
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 
 	"github.com/J-Obog/tasket/src/api"
@@ -20,46 +21,56 @@ func NewUserResource(userManager managers.UserManager) *UserResource {
 	}
 }
 
-func (this *UserResource) GetUser(req api.RestRequest) api.RestResponse {
+func (this *UserResource) GetUser(req api.RestRequest) (api.RestResponse, int) {
 	id := utils.CurrentUserId(req)
 
 	user, err := this.userManager.GetUserById(id)
 
 	if err != nil {
-		return utils.MakeServerError()
+		return api.ServerErrorResponse(), http.StatusInternalServerError
 	}
-	return api.RestResponse{
-		Object: map[string]interface{}{
-			"data": &user,
-		},
-		Status: http.StatusOK,
+
+	if user == nil {
+		res := api.RestResponse{
+			Error: api.RestError{
+				Type:   "resource not found",
+				Detail: fmt.Sprintf("User could not be found"),
+			},
+		}
+
+		return res, http.StatusNotFound
 	}
+
+	res := api.RestResponse{
+		Data: &user,
+	}
+
+	return res, http.StatusOK
 }
 
-func (this *UserResource) DeleteUser(req api.RestRequest) api.RestResponse {
+func (this *UserResource) DeleteUser(req api.RestRequest) (api.RestResponse, int) {
 	id := utils.CurrentUserId(req)
 
 	err := this.userManager.DeleteUser(id)
 
 	if err != nil {
-		return utils.MakeServerError()
+		return api.ServerErrorResponse(), http.StatusInternalServerError
 	}
 
-	return api.RestResponse{
-		Object: map[string]interface{}{
-			"message": "User deleted successfully",
-		},
-		Status: http.StatusOK,
+	res := api.RestResponse{
+		Message: "User deleted successfully",
 	}
+
+	return res, http.StatusOK
 }
 
-func (this *UserResource) CreateUser(req api.RestRequest) api.RestResponse {
+func (this *UserResource) CreateUser(req api.RestRequest) (api.RestResponse, int) {
 	var newUser models.NewUser
 
 	err := json.Unmarshal(req.Body, &newUser)
 
 	if err != nil {
-		return utils.MakeServerError()
+		return api.ServerErrorResponse(), http.StatusInternalServerError
 	}
 
 	//validate user request
@@ -67,13 +78,12 @@ func (this *UserResource) CreateUser(req api.RestRequest) api.RestResponse {
 	err = this.userManager.CreateUser(newUser)
 
 	if err != nil {
-		return utils.MakeServerError()
+		return api.ServerErrorResponse(), http.StatusInternalServerError
 	}
 
-	return api.RestResponse{
-		Object: map[string]interface{}{
-			"message": "User created successfully",
-		},
-		Status: http.StatusOK,
+	res := api.RestResponse{
+		Message: "User created successfully",
 	}
+
+	return res, http.StatusOK
 }
