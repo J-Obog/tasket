@@ -86,7 +86,22 @@ func (this *TaskResource) GetTaskLogs(req models.RestRequest) models.RestRespons
 func (this *TaskResource) StopTask(req models.RestRequest) models.RestResponse {
 	id := utils.TaskIdParam()
 
-	err := this.taskManager.StopTask(id)
+	task, err := this.taskManager.GetTaskById(id)
+
+	if err != nil {
+		return utils.MakeServerError()
+	}
+
+	if task != nil {
+		return models.RestResponse{
+			Object: map[string]interface{}{
+				"message": fmt.Sprintf("Task %s was not found", id),
+			},
+			Status: http.StatusNotFound,
+		}
+	}
+
+	err = this.taskManager.StopTask(id)
 
 	if err != nil {
 		return utils.MakeServerError()
@@ -94,7 +109,7 @@ func (this *TaskResource) StopTask(req models.RestRequest) models.RestResponse {
 
 	return models.RestResponse{
 		Object: map[string]interface{}{
-			"message": "Task stopped successfully",
+			"message": fmt.Sprintf("Task %s is set to be stopped", id),
 		},
 		Status: http.StatusOK,
 	}

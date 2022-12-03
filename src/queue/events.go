@@ -6,3 +6,7 @@ type TaskScheduledEvent struct {
 	TaskId     string
 	TaskConfig models.TaskConfig
 }
+
+type TaskStoppedEvent struct {
+	TaskId string
+}

@@ -40,6 +40,15 @@ func (this *TaskManager) UpdateTaskStatus(id string, status models.TaskStatus) e
 }
 
 func (this *TaskManager) StopTask(id string) error {
+	event := queue.TaskStoppedEvent{
+		TaskId: id,
+	}
+
+	err := this.taskQueue.Push(&event)
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 
