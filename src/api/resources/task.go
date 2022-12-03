@@ -2,6 +2,7 @@ package resources
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 
 	"github.com/J-Obog/tasket/src/managers"
@@ -101,7 +102,42 @@ func (this *TaskResource) StopTask(req models.RestRequest) models.RestResponse {
 
 // todo: implement
 func (this *TaskResource) UpdateTask(req models.RestRequest) models.RestResponse {
-	return models.RestResponse{}
+	id := utils.TaskIdParam()
+
+	var updatedTask models.UpdatedTask
+
+	err := json.Unmarshal(req.Body, &updatedTask)
+
+	if err != nil {
+		return utils.MakeServerError()
+	}
+
+	task, err := this.taskManager.GetTaskById(id)
+	if err != nil {
+		return utils.MakeServerError()
+	}
+
+	if task == nil {
+		return models.RestResponse{
+			Object: map[string]interface{}{
+				"message": fmt.Sprintf("Task with id %s was not found", id),
+			},
+			Status: http.StatusNotFound,
+		}
+	}
+
+	err = this.taskManager.UpdateTask(id, updatedTask)
+
+	if err != nil {
+		return utils.MakeServerError()
+	}
+
+	return models.RestResponse{
+		Object: map[string]interface{}{
+			"message": "Task updated successfully",
+		},
+		Status: http.StatusOK,
+	}
 }
 
 func (this *TaskResource) CreateTask(req models.RestRequest) models.RestResponse {
@@ -125,7 +161,7 @@ func (this *TaskResource) CreateTask(req models.RestRequest) models.RestResponse
 
 	return models.RestResponse{
 		Object: map[string]interface{}{
-			"message": "Task creaetd successfully",
+			"message": "Task created successfully",
 		},
 		Status: http.StatusOK,
 	}
