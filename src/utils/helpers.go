@@ -2,10 +2,12 @@ package utils
 
 import (
 	"time"
+
+	"github.com/segmentio/ksuid"
 )
 
 func GenerateUUID() string {
-	return ""
+	return ksuid.New().String()
 }
 
 func TimeNow() int64 {
