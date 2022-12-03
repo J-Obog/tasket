@@ -2,11 +2,21 @@ package queue
 
 import "github.com/J-Obog/tasket/src/models"
 
+type EventType string
+
+const (
+	EventType_UNKNOWN        EventType = ""
+	EventType_TASK_SCHEDULED           = "task.scheduled"
+	EventType_TASK_STOPPED             = "task.stopped"
+)
+
 type TaskScheduledEvent struct {
-	TaskId     string
-	TaskConfig models.TaskConfig
+	Type       EventType         `json:"type"`
+	TaskId     string            `json:"taskId"`
+	TaskConfig models.TaskConfig `json:"taskConfig"`
 }
 
 type TaskStoppedEvent struct {
-	TaskId string
+	Type   EventType `json:"type"`
+	TaskId string    `json:"taskId"`
 }

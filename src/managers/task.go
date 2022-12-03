@@ -37,6 +37,7 @@ func (this *TaskManager) UpdateTaskStatus(id string, status models.TaskStatus) e
 
 func (this *TaskManager) StopTask(id string) error {
 	event := queue.TaskStoppedEvent{
+		Type:   queue.EventType_TASK_STOPPED,
 		TaskId: id,
 	}
 
@@ -71,6 +72,7 @@ func (this *TaskManager) CreateTask(userId string, newTask models.NewTask) error
 	}
 
 	event := queue.TaskScheduledEvent{
+		Type:       queue.EventType_TASK_SCHEDULED,
 		TaskId:     id,
 		TaskConfig: config,
 	}
