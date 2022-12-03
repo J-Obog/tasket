@@ -21,7 +21,3 @@ func GenerateHash(s string) []byte {
 func CurrentUserId(req api.RestRequest) string {
 	return ""
 }
-
-func TaskIdParam() string {
-	return ""
-}

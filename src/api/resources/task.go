@@ -24,7 +24,7 @@ func NewTaskResource(taskManager managers.TaskManager, logManager managers.LogMa
 }
 
 func (this *TaskResource) GetTask(req api.RestRequest) (api.RestResponse, int) {
-	id := utils.TaskIdParam()
+	id := this.taskId(req.UrlParams)
 
 	task, err := this.taskManager.GetTaskById(id)
 
@@ -69,7 +69,7 @@ func (this *TaskResource) GetTasks(req api.RestRequest) (api.RestResponse, int) 
 }
 
 func (this *TaskResource) GetTaskLogs(req api.RestRequest) (api.RestResponse, int) {
-	id := utils.TaskIdParam()
+	id := this.taskId(req.UrlParams)
 
 	var options models.LogOptions
 
@@ -95,7 +95,7 @@ func (this *TaskResource) GetTaskLogs(req api.RestRequest) (api.RestResponse, in
 }
 
 func (this *TaskResource) StopTask(req api.RestRequest) (api.RestResponse, int) {
-	id := utils.TaskIdParam()
+	id := this.taskId(req.UrlParams)
 
 	task, err := this.taskManager.GetTaskById(id)
 
@@ -128,7 +128,7 @@ func (this *TaskResource) StopTask(req api.RestRequest) (api.RestResponse, int) 
 }
 
 func (this *TaskResource) UpdateTask(req api.RestRequest) (api.RestResponse, int) {
-	id := utils.TaskIdParam()
+	id := this.taskId(req.UrlParams)
 
 	var updatedTask models.UpdatedTask
 
@@ -191,4 +191,8 @@ func (this *TaskResource) CreateTask(req api.RestRequest) (api.RestResponse, int
 	}
 
 	return res, http.StatusOK
+}
+
+func (this *TaskResource) taskId(urlParams map[string]interface{}) string {
+	return urlParams["id"].(string)
 }
