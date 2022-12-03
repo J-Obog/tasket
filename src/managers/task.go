@@ -48,6 +48,7 @@ func (this *TaskManager) StopTask(id string) error {
 
 	err := this.taskQueue.Push(&event)
 	if err != nil {
+		this.logger.Error(fmt.Sprintf("Failed to push event %v", event))
 		return err
 	}
 
@@ -85,8 +86,7 @@ func (this *TaskManager) CreateTask(userId string, newTask models.NewTask) error
 	err = this.taskQueue.Push(&event)
 
 	if err != nil {
-		msg := fmt.Sprintf("Failed to push %s event for task %s", queue.EventType_TASK_SCHEDULED, id)
-		this.logger.Error(msg)
+		this.logger.Error(fmt.Sprintf("Failed to push event %v", event))
 	}
 
 	return nil

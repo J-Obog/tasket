@@ -1,4 +1,4 @@
-package api
+package rest
 
 type RestHandler func(req RestRequest) (res RestResponse, status int)
 
