@@ -3,7 +3,7 @@ package utils
 import (
 	"net/http"
 
-	"github.com/J-Obog/tasket/src/models"
+	"github.com/J-Obog/tasket/src/api"
 )
 
 func GenerateUUID() string {
@@ -18,12 +18,12 @@ func GenerateHash(s string) []byte {
 	return nil
 }
 
-func CurrentUserId(req models.RestRequest) string {
+func CurrentUserId(req api.RestRequest) string {
 	return ""
 }
 
-func MakeServerError() models.RestResponse {
-	return models.RestResponse{
+func MakeServerError() api.RestResponse {
+	return api.RestResponse{
 		Object: map[string]interface{}{
 			"message": "Internal Server Error",
 		},

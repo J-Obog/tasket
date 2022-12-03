@@ -1,4 +1,4 @@
-package models
+package api
 
 type RestRequest struct {
 	Url         string
@@ -8,6 +8,6 @@ type RestRequest struct {
 }
 
 type RestResponse struct {
-	Object map[string]interface{}
+	Object interface{}
 	Status int
 }

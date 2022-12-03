@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/J-Obog/tasket/src/api"
 	"github.com/J-Obog/tasket/src/managers"
 	"github.com/J-Obog/tasket/src/models"
 	"github.com/J-Obog/tasket/src/utils"
@@ -22,7 +23,7 @@ func NewTaskResource(taskManager managers.TaskManager, logManager managers.LogMa
 	}
 }
 
-func (this *TaskResource) GetTask(req models.RestRequest) models.RestResponse {
+func (this *TaskResource) GetTask(req api.RestRequest) api.RestResponse {
 	id := utils.TaskIdParam()
 
 	task, err := this.taskManager.GetTaskById(id)
@@ -31,15 +32,13 @@ func (this *TaskResource) GetTask(req models.RestRequest) models.RestResponse {
 		return utils.MakeServerError()
 	}
 
-	return models.RestResponse{
-		Object: map[string]interface{}{
-			"data": &task,
-		},
+	return api.RestResponse{
+		Object: &task,
 		Status: http.StatusOK,
 	}
 }
 
-func (this *TaskResource) GetTasks(req models.RestRequest) models.RestResponse {
+func (this *TaskResource) GetTasks(req api.RestRequest) api.RestResponse {
 	id := utils.CurrentUserId(req)
 
 	tasks, err := this.taskManager.GetTasksByUser(id)
@@ -48,15 +47,13 @@ func (this *TaskResource) GetTasks(req models.RestRequest) models.RestResponse {
 		return utils.MakeServerError()
 	}
 
-	return models.RestResponse{
-		Object: map[string]interface{}{
-			"data": tasks,
-		},
+	return api.RestResponse{
+		Object: tasks,
 		Status: http.StatusOK,
 	}
 }
 
-func (this *TaskResource) GetTaskLogs(req models.RestRequest) models.RestResponse {
+func (this *TaskResource) GetTaskLogs(req api.RestRequest) api.RestResponse {
 	id := utils.TaskIdParam()
 
 	var options models.LogOptions
@@ -75,15 +72,13 @@ func (this *TaskResource) GetTaskLogs(req models.RestRequest) models.RestRespons
 		return utils.MakeServerError()
 	}
 
-	return models.RestResponse{
-		Object: map[string]interface{}{
-			"data": logs,
-		},
+	return api.RestResponse{
+		Object: logs,
 		Status: http.StatusOK,
 	}
 }
 
-func (this *TaskResource) StopTask(req models.RestRequest) models.RestResponse {
+func (this *TaskResource) StopTask(req api.RestRequest) api.RestResponse {
 	id := utils.TaskIdParam()
 
 	task, err := this.taskManager.GetTaskById(id)
@@ -93,7 +88,7 @@ func (this *TaskResource) StopTask(req models.RestRequest) models.RestResponse {
 	}
 
 	if task != nil {
-		return models.RestResponse{
+		return api.RestResponse{
 			Object: map[string]interface{}{
 				"message": fmt.Sprintf("Task %s was not found", id),
 			},
@@ -107,7 +102,7 @@ func (this *TaskResource) StopTask(req models.RestRequest) models.RestResponse {
 		return utils.MakeServerError()
 	}
 
-	return models.RestResponse{
+	return api.RestResponse{
 		Object: map[string]interface{}{
 			"message": fmt.Sprintf("Task %s is set to be stopped", id),
 		},
@@ -115,7 +110,7 @@ func (this *TaskResource) StopTask(req models.RestRequest) models.RestResponse {
 	}
 }
 
-func (this *TaskResource) UpdateTask(req models.RestRequest) models.RestResponse {
+func (this *TaskResource) UpdateTask(req api.RestRequest) api.RestResponse {
 	id := utils.TaskIdParam()
 
 	var updatedTask models.UpdatedTask
@@ -132,7 +127,7 @@ func (this *TaskResource) UpdateTask(req models.RestRequest) models.RestResponse
 	}
 
 	if task == nil {
-		return models.RestResponse{
+		return api.RestResponse{
 			Object: map[string]interface{}{
 				"message": fmt.Sprintf("Task with id %s was not found", id),
 			},
@@ -146,7 +141,7 @@ func (this *TaskResource) UpdateTask(req models.RestRequest) models.RestResponse
 		return utils.MakeServerError()
 	}
 
-	return models.RestResponse{
+	return api.RestResponse{
 		Object: map[string]interface{}{
 			"message": "Task updated successfully",
 		},
@@ -154,7 +149,7 @@ func (this *TaskResource) UpdateTask(req models.RestRequest) models.RestResponse
 	}
 }
 
-func (this *TaskResource) CreateTask(req models.RestRequest) models.RestResponse {
+func (this *TaskResource) CreateTask(req api.RestRequest) api.RestResponse {
 	id := utils.CurrentUserId(req)
 
 	var newTask models.NewTask
@@ -173,7 +168,7 @@ func (this *TaskResource) CreateTask(req models.RestRequest) models.RestResponse
 		return utils.MakeServerError()
 	}
 
-	return models.RestResponse{
+	return api.RestResponse{
 		Object: map[string]interface{}{
 			"message": "Task created successfully",
 		},
