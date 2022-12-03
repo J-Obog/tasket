@@ -6,7 +6,7 @@ type Message struct {
 	Timestamp int64
 }
 
-type ScheduledTask struct {
+type TaskScheduledEvent struct {
 	TaskId     string
 	TaskConfig TaskConfig
 }

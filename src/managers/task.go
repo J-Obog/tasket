@@ -1,8 +1,6 @@
 package managers
 
 import (
-	"encoding/json"
-
 	"github.com/J-Obog/tasket/src/models"
 	"github.com/J-Obog/tasket/src/queue"
 	"github.com/J-Obog/tasket/src/store"
@@ -67,15 +65,12 @@ func (this *TaskManager) CreateTask(userId string, newTask models.NewTask) error
 		return err
 	}
 
-	msg := models.ScheduledTask{
+	event := models.TaskScheduledEvent{
 		TaskId:     id,
 		TaskConfig: config,
 	}
 
-	data, err := json.Marshal(&msg)
-	// log error
-
-	err = this.taskQueue.Push(data)
+	err = this.taskQueue.Push(&event)
 	//log error
 
 	return nil
