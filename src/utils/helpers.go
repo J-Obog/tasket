@@ -1,6 +1,8 @@
 package utils
 
 import (
+	"time"
+
 	"github.com/J-Obog/tasket/src/api"
 )
 
@@ -9,7 +11,7 @@ func GenerateUUID() string {
 }
 
 func TimeNow() int64 {
-	return 0
+	return time.Now().Unix()
 }
 
 func GenerateHash(s string) []byte {
