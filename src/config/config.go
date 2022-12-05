@@ -1,7 +1,9 @@
 package config
 
 type AppConfig struct {
-	RedisUrl      string `json:"redisUrl"`
-	RedisUsername string `json:"redisUsername"`
-	RedisPassword string `json:"redisPassword"`
+	RedisAddress    string `json:"redisAddress"`
+	RedisUsername   string `json:"redisUsername"`
+	RedisPassword   string `json:"redisPassword"`
+	RabbitmqAddress string `json:"rabbitmqAddress"`
+	TaskQueueName   string `json:"taskQueueName"`
 }
