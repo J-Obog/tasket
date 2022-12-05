@@ -9,16 +9,12 @@ import (
 )
 
 type RedisCache struct {
-	client redis.Client
+	client *redis.Client
 }
 
-func NewRedisCache(address string, user string, password string) *RedisCache {
+func NewRedisCache(client *redis.Client) *RedisCache {
 	return &RedisCache{
-		client: *redis.NewClient(&redis.Options{
-			Addr:     address,
-			Username: user,
-			Password: password,
-		}),
+		client: client,
 	}
 }
 
