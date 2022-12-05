@@ -12,30 +12,10 @@ type RabbitMqQueue struct {
 	name    string
 }
 
-func NewRabbitMqQueue(address string, name string) (*RabbitMqQueue, error) {
-	conn, err := amqp.Dial(address)
-
-	if err != nil {
-		return nil, err
-	}
-
-	channel, err := conn.Channel()
-
-	if err != nil {
-		return nil, err
-	}
-
-	err = channel.Qos(1, 0, false)
-
-	if err != nil {
-		return nil, err
-	}
-
-	q := &RabbitMqQueue{
+func NewRabbitMqQueue(channel *amqp.Channel, name string) *RabbitMqQueue {
+	return &RabbitMqQueue{
 		channel: channel,
 	}
-
-	return q, nil
 }
 
 func (this *RabbitMqQueue) Push(serializable interface{}) error {
