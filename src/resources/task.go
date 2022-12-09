@@ -11,11 +11,11 @@ import (
 )
 
 type TaskResource struct {
-	taskManager managers.TaskManager
-	logManager  managers.LogManager
+	taskManager managers.ITaskManager
+	logManager  managers.ILogManager
 }
 
-func NewTaskResource(taskManager managers.TaskManager, logManager managers.LogManager) *TaskResource {
+func NewTaskResource(taskManager managers.ITaskManager, logManager managers.ILogManager) *TaskResource {
 	return &TaskResource{
 		taskManager: taskManager,
 		logManager:  logManager,

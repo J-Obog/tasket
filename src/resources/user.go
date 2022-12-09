@@ -11,10 +11,10 @@ import (
 )
 
 type UserResource struct {
-	userManager managers.UserManager
+	userManager managers.IUserManager
 }
 
-func NewUserResource(userManager managers.UserManager) *UserResource {
+func NewUserResource(userManager managers.IUserManager) *UserResource {
 	return &UserResource{
 		userManager: userManager,
 	}

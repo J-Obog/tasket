@@ -1,6 +1,6 @@
 package logger
 
-type Logger interface {
+type ILogger interface {
 	Info(message string)
 	Debug(message string)
 	Warn(message string)
