@@ -11,12 +11,12 @@ import (
 )
 
 type TaskManager struct {
-	taskStore store.TaskStore
-	taskQueue queue.Queue
+	taskStore store.ITaskStore
+	taskQueue queue.IQueue
 	logger    logger.ILogger
 }
 
-func NewTaskManager(taskStore store.TaskStore, taskQueue queue.Queue, logger logger.ILogger) *TaskManager {
+func NewTaskManager(taskStore store.ITaskStore, taskQueue queue.IQueue, logger logger.ILogger) *TaskManager {
 	return &TaskManager{
 		taskStore: taskStore,
 		taskQueue: taskQueue,

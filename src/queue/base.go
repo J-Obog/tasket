@@ -1,6 +1,6 @@
 package queue
 
-type Queue interface {
+type IQueue interface {
 	Push(serializable interface{}) error
 	Pull() ([]byte, error)
 }

@@ -7,10 +7,10 @@ import (
 )
 
 type UserManager struct {
-	userStore store.UserStore
+	userStore store.IUserStore
 }
 
-func NewUserManager(userStore store.UserStore) *UserManager {
+func NewUserManager(userStore store.IUserStore) *UserManager {
 	return &UserManager{
 		userStore: userStore,
 	}

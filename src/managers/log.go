@@ -7,10 +7,10 @@ import (
 )
 
 type LogManager struct {
-	logStore store.LogStore
+	logStore store.ILogStore
 }
 
-func NewLogManager(logStore store.LogStore) *LogManager {
+func NewLogManager(logStore store.ILogStore) *LogManager {
 	return &LogManager{
 		logStore: logStore,
 	}
