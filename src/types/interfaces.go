@@ -13,8 +13,8 @@ type ILogger interface {
 }
 
 type IQueue interface {
-	Push(serializable interface{}) error
-	Pull() ([]byte, error)
+	Push(message EventMessage) error
+	Pull() (EventMessage, error)
 }
 
 type IServer interface {
@@ -80,8 +80,8 @@ type IUserStore interface {
 type ITaskStore interface {
 	GetById(id string) (*Task, error)
 	GetByFilter(userId string, options TaskOptions) ([]Task, error)
-	Update(id string, updatedTask UpdatedTask) error
-	UpdateStatus(id string, status TaskStatus) error
+	Update(id string, updatedTask UpdatedTask, updatedAt int64) error
+	UpdateStatus(id string, status TaskStatus, updatedAt int64) error
 	Insert(task Task) error
 }
 

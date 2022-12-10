@@ -5,7 +5,6 @@ go 1.19
 require (
 	github.com/go-redis/redis/v9 v9.0.0-rc.2
 	github.com/rabbitmq/amqp091-go v1.5.0
-	github.com/segmentio/ksuid v1.0.4
 	github.com/stretchr/testify v1.8.1
 )
 

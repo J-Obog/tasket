@@ -22,15 +22,19 @@ type RestResponse struct {
 	Status int64
 }
 
-type TaskScheduledEvent struct {
-	Type       EventType  `json:"type"`
+type EventMessage struct {
+	Type      EventType   `json:"type"`
+	Data      interface{} `json:"data"`
+	Timestamp int64       `json:"timestamp"`
+}
+
+type TaskScheduledMessage struct {
 	TaskId     string     `json:"taskId"`
 	TaskConfig TaskConfig `json:"taskConfig"`
 }
 
-type TaskStoppedEvent struct {
-	Type   EventType `json:"type"`
-	TaskId string    `json:"taskId"`
+type TaskStoppedMessage struct {
+	TaskId string `json:"taskId"`
 }
 
 type Log struct {

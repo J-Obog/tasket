@@ -72,13 +72,13 @@ func (_m *ITaskStore) Insert(task types.Task) error {
 	return r0
 }
 
-// Update provides a mock function with given fields: id, updatedTask
-func (_m *ITaskStore) Update(id string, updatedTask types.UpdatedTask) error {
-	ret := _m.Called(id, updatedTask)
+// Update provides a mock function with given fields: id, updatedTask, updatedAt
+func (_m *ITaskStore) Update(id string, updatedTask types.UpdatedTask, updatedAt int64) error {
+	ret := _m.Called(id, updatedTask, updatedAt)
 
 	var r0 error
-	if rf, ok := ret.Get(0).(func(string, types.UpdatedTask) error); ok {
-		r0 = rf(id, updatedTask)
+	if rf, ok := ret.Get(0).(func(string, types.UpdatedTask, int64) error); ok {
+		r0 = rf(id, updatedTask, updatedAt)
 	} else {
 		r0 = ret.Error(0)
 	}
@@ -86,13 +86,13 @@ func (_m *ITaskStore) Update(id string, updatedTask types.UpdatedTask) error {
 	return r0
 }
 
-// UpdateStatus provides a mock function with given fields: id, status
-func (_m *ITaskStore) UpdateStatus(id string, status types.TaskStatus) error {
-	ret := _m.Called(id, status)
+// UpdateStatus provides a mock function with given fields: id, status, updatedAt
+func (_m *ITaskStore) UpdateStatus(id string, status types.TaskStatus, updatedAt int64) error {
+	ret := _m.Called(id, status, updatedAt)
 
 	var r0 error
-	if rf, ok := ret.Get(0).(func(string, types.TaskStatus) error); ok {
-		r0 = rf(id, status)
+	if rf, ok := ret.Get(0).(func(string, types.TaskStatus, int64) error); ok {
+		r0 = rf(id, status, updatedAt)
 	} else {
 		r0 = ret.Error(0)
 	}

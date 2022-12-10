@@ -1,6 +1,6 @@
 TEST_DIR_NAME = tests
 
-generate-mocks:
+gen-mocks:
 	mockery --all --output ./$(TEST_DIR_NAME)/mocks
 
 unit-tests:

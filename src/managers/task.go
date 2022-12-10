@@ -3,6 +3,7 @@ package managers
 import (
 	"fmt"
 
+	"github.com/J-Obog/tasket/src/queue"
 	"github.com/J-Obog/tasket/src/types"
 )
 
@@ -39,22 +40,23 @@ func (this *TaskManager) GetTasksByFilter(userId string, options types.TaskOptio
 }
 
 func (this *TaskManager) UpdateTask(id string, updatedTask types.UpdatedTask) error {
-	return this.taskStore.Update(id, updatedTask)
+	now := this.timeProvider.Now()
+	return this.taskStore.Update(id, updatedTask, now)
 }
 
 func (this *TaskManager) UpdateTaskStatus(id string, status types.TaskStatus) error {
-	return this.taskStore.UpdateStatus(id, status)
+	now := this.timeProvider.Now()
+	return this.taskStore.UpdateStatus(id, status, now)
 }
 
 func (this *TaskManager) StopTask(id string) error {
-	event := types.TaskStoppedEvent{
-		Type:   types.EventType_TASK_STOPPED,
-		TaskId: id,
-	}
+	now := this.timeProvider.Now()
 
-	err := this.taskQueue.Push(&event)
+	msg := queue.MakeTaskStoppedMsg(id, now)
+	err := this.taskQueue.Push(msg)
+
 	if err != nil {
-		this.logger.Error(fmt.Sprintf("Failed to push event %v", event))
+		this.logger.Error(fmt.Sprintf("Failed to push event %v", msg))
 		return err
 	}
 
@@ -83,16 +85,11 @@ func (this *TaskManager) CreateTask(userId string, newTask types.NewTask) error 
 		return err
 	}
 
-	event := types.TaskScheduledEvent{
-		Type:       types.EventType_TASK_SCHEDULED,
-		TaskId:     id,
-		TaskConfig: config,
-	}
-
-	err = this.taskQueue.Push(&event)
+	msg := queue.MakeTaskScheduledMsg(id, config, now)
+	err = this.taskQueue.Push(msg)
 
 	if err != nil {
-		this.logger.Error(fmt.Sprintf("Failed to push event %v", event))
+		this.logger.Error(fmt.Sprintf("Failed to push event %v", msg))
 	}
 
 	return nil

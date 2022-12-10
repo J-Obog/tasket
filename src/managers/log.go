@@ -26,15 +26,15 @@ func (this *LogManager) GetLogsByFilter(taskId string, filter types.LogOptions) 
 	return this.logStore.GetByFilter(taskId, filter)
 }
 
-func (this *LogManager) CreateLog(taskId string, logReq types.NewLog) error {
+func (this *LogManager) CreateLog(taskId string, newLog types.NewLog) error {
 	id := this.uuidProvider.UUID()
 	now := this.timeProvider.Now()
 
 	log := types.Log{
 		Id:        id,
-		TaskId:    logReq.TaskId,
-		Source:    logReq.Source,
-		Content:   logReq.Content,
+		TaskId:    newLog.TaskId,
+		Source:    newLog.Source,
+		Content:   newLog.Content,
 		CreatedAt: now,
 	}
 
