@@ -5,77 +5,61 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/J-Obog/tasket/src/managers"
-	"github.com/J-Obog/tasket/src/models"
-	"github.com/J-Obog/tasket/src/rest"
+	"github.com/J-Obog/tasket/src/types"
 )
 
 type TaskResource struct {
-	taskManager managers.ITaskManager
-	logManager  managers.ILogManager
+	taskManager types.ITaskManager
+	logManager  types.ILogManager
 }
 
-func NewTaskResource(taskManager managers.ITaskManager, logManager managers.ILogManager) *TaskResource {
+func NewTaskResource(taskManager types.ITaskManager, logManager types.ILogManager) *TaskResource {
 	return &TaskResource{
 		taskManager: taskManager,
 		logManager:  logManager,
 	}
 }
 
-func (this *TaskResource) GetTask(req rest.RestRequest) (rest.RestResponse, int) {
+func (this *TaskResource) GetTask(req types.RestRequest) types.RestResponse {
 	id := this.taskId(req.UrlParams)
 
 	task, err := this.taskManager.GetTaskById(id)
 
 	if err != nil {
-		return rest.ServerErrorResponse(), http.StatusInternalServerError
+		return ServerErrorResponse()
 	}
 
 	if task == nil {
-		res := rest.RestResponse{
-			Error: rest.RestError{
-				Type:   "resource not found",
-				Detail: fmt.Sprintf("Task %s could not be found", id),
-			},
-		}
-
-		return res, http.StatusNotFound
+		resErr := MakeError("resource not found", fmt.Sprintf("Task %s could not be found", id))
+		return MakeResponse(&resErr, http.StatusNotFound)
 	}
 
-	res := rest.RestResponse{
-		Data: &task,
-	}
-
-	return res, http.StatusOK
+	return MakeResponse(&task, http.StatusOK)
 }
 
-func (this *TaskResource) GetTasks(req rest.RestRequest) (rest.RestResponse, int) {
-	var taskOptions models.TaskOptions
+func (this *TaskResource) GetTasks(req types.RestRequest) types.RestResponse {
+	var taskOptions types.TaskOptions
 
-	id := rest.UserId(req.Metadata)
+	id := UserId(req.Metadata)
 
 	tasks, err := this.taskManager.GetTasksByFilter(id, taskOptions)
 
 	if err != nil {
-		return rest.ServerErrorResponse(), http.StatusInternalServerError
+		return ServerErrorResponse()
 	}
 
-	res := rest.RestResponse{
-		Data: tasks,
-	}
-
-	return res, http.StatusOK
+	return MakeResponse(tasks, http.StatusOK)
 }
 
-func (this *TaskResource) GetTaskLogs(req rest.RestRequest) (rest.RestResponse, int) {
+func (this *TaskResource) GetTaskLogs(req types.RestRequest) types.RestResponse {
 	id := this.taskId(req.UrlParams)
 
-	var options models.LogOptions
+	var options types.LogOptions
 
 	err := json.Unmarshal(req.Body, &options)
 
 	if err != nil {
-		return rest.ServerErrorResponse(), http.StatusInternalServerError
+		return ServerErrorResponse()
 	}
 
 	//validate log filter
@@ -83,98 +67,76 @@ func (this *TaskResource) GetTaskLogs(req rest.RestRequest) (rest.RestResponse, 
 	logs, err := this.logManager.GetLogsByFilter(id, options)
 
 	if err != nil {
-		return rest.ServerErrorResponse(), http.StatusInternalServerError
+		return ServerErrorResponse()
 	}
 
-	res := rest.RestResponse{
-		Data: logs,
-	}
-
-	return res, http.StatusOK
+	return MakeResponse(logs, http.StatusOK)
 }
 
-func (this *TaskResource) StopTask(req rest.RestRequest) (rest.RestResponse, int) {
+func (this *TaskResource) StopTask(req types.RestRequest) types.RestResponse {
 	id := this.taskId(req.UrlParams)
 
 	task, err := this.taskManager.GetTaskById(id)
 
 	if err != nil {
-		return rest.ServerErrorResponse(), http.StatusInternalServerError
+		return ServerErrorResponse()
 	}
 
 	if task != nil {
-		res := rest.RestResponse{
-			Error: rest.RestError{
-				Type:   "not found",
-				Detail: fmt.Sprintf("Task %s was not found", id),
-			},
-		}
-
-		return res, http.StatusNotFound
+		resErr := MakeError("not found", fmt.Sprintf("Task %s was not found", id))
+		return MakeResponse(&resErr, http.StatusNotFound)
 	}
 
 	err = this.taskManager.StopTask(id)
 
 	if err != nil {
-		return rest.ServerErrorResponse(), http.StatusInternalServerError
+		return ServerErrorResponse()
 	}
 
-	res := rest.RestResponse{
-		Message: fmt.Sprintf("Task %s is set to be stopped", id),
-	}
-
-	return res, http.StatusOK
+	msg := MakeMessage(fmt.Sprintf("Task %s is set to be stopped", id))
+	return MakeResponse(&msg, http.StatusOK)
 }
 
-func (this *TaskResource) UpdateTask(req rest.RestRequest) (rest.RestResponse, int) {
+func (this *TaskResource) UpdateTask(req types.RestRequest) types.RestResponse {
 	id := this.taskId(req.UrlParams)
 
-	var updatedTask models.UpdatedTask
+	var updatedTask types.UpdatedTask
 
 	err := json.Unmarshal(req.Body, &updatedTask)
 
 	if err != nil {
-		return rest.ServerErrorResponse(), http.StatusInternalServerError
+		return ServerErrorResponse()
 	}
 
 	task, err := this.taskManager.GetTaskById(id)
 	if err != nil {
-		return rest.ServerErrorResponse(), http.StatusInternalServerError
+		return ServerErrorResponse()
 	}
 
 	if task == nil {
-		res := rest.RestResponse{
-			Error: rest.RestError{
-				Type:   "not found",
-				Detail: fmt.Sprintf("Task %s was not found", id),
-			},
-		}
-
-		return res, http.StatusNotFound
+		resErr := MakeError("not found", fmt.Sprintf("Task %s was not found", id))
+		return MakeResponse(&resErr, http.StatusNotFound)
 	}
 
 	err = this.taskManager.UpdateTask(id, updatedTask)
 
 	if err != nil {
-		return rest.ServerErrorResponse(), http.StatusInternalServerError
+		return ServerErrorResponse()
 	}
 
-	res := rest.RestResponse{
-		Message: fmt.Sprintf("Task %s updated successfully", id),
-	}
-
-	return res, http.StatusOK
+	msg := MakeMessage(fmt.Sprintf("Task %s updated successfully", id))
+	return MakeResponse(&msg, http.StatusOK)
 }
 
-func (this *TaskResource) CreateTask(req rest.RestRequest) (rest.RestResponse, int) {
-	id := rest.UserId(req.Metadata)
+func (this *TaskResource) CreateTask(req types.RestRequest) types.RestResponse {
+	id := UserId(req.Metadata)
 
-	var newTask models.NewTask
+	var newTask types.NewTask
 
 	err := json.Unmarshal(req.Body, &newTask)
 
 	if err != nil {
-		return rest.ServerErrorResponse(), http.StatusInternalServerError
+		return ServerErrorResponse()
 	}
 
 	//validate task request
@@ -182,14 +144,11 @@ func (this *TaskResource) CreateTask(req rest.RestRequest) (rest.RestResponse, i
 	err = this.taskManager.CreateTask(id, newTask)
 
 	if err != nil {
-		return rest.ServerErrorResponse(), http.StatusInternalServerError
+		return ServerErrorResponse()
 	}
 
-	res := rest.RestResponse{
-		Message: "Task created successfully",
-	}
-
-	return res, http.StatusOK
+	msg := MakeMessage("Task created successfully")
+	return MakeResponse(&msg, http.StatusOK)
 }
 
 func (this *TaskResource) taskId(urlParams map[string]interface{}) string {

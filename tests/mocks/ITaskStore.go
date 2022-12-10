@@ -3,7 +3,7 @@
 package mocks
 
 import (
-	models "github.com/J-Obog/tasket/src/models"
+	types "github.com/J-Obog/tasket/src/types"
 	mock "github.com/stretchr/testify/mock"
 )
 
@@ -13,20 +13,20 @@ type ITaskStore struct {
 }
 
 // GetByFilter provides a mock function with given fields: userId, options
-func (_m *ITaskStore) GetByFilter(userId string, options models.TaskOptions) ([]models.Task, error) {
+func (_m *ITaskStore) GetByFilter(userId string, options types.TaskOptions) ([]types.Task, error) {
 	ret := _m.Called(userId, options)
 
-	var r0 []models.Task
-	if rf, ok := ret.Get(0).(func(string, models.TaskOptions) []models.Task); ok {
+	var r0 []types.Task
+	if rf, ok := ret.Get(0).(func(string, types.TaskOptions) []types.Task); ok {
 		r0 = rf(userId, options)
 	} else {
 		if ret.Get(0) != nil {
-			r0 = ret.Get(0).([]models.Task)
+			r0 = ret.Get(0).([]types.Task)
 		}
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(string, models.TaskOptions) error); ok {
+	if rf, ok := ret.Get(1).(func(string, types.TaskOptions) error); ok {
 		r1 = rf(userId, options)
 	} else {
 		r1 = ret.Error(1)
@@ -36,15 +36,15 @@ func (_m *ITaskStore) GetByFilter(userId string, options models.TaskOptions) ([]
 }
 
 // GetById provides a mock function with given fields: id
-func (_m *ITaskStore) GetById(id string) (*models.Task, error) {
+func (_m *ITaskStore) GetById(id string) (*types.Task, error) {
 	ret := _m.Called(id)
 
-	var r0 *models.Task
-	if rf, ok := ret.Get(0).(func(string) *models.Task); ok {
+	var r0 *types.Task
+	if rf, ok := ret.Get(0).(func(string) *types.Task); ok {
 		r0 = rf(id)
 	} else {
 		if ret.Get(0) != nil {
-			r0 = ret.Get(0).(*models.Task)
+			r0 = ret.Get(0).(*types.Task)
 		}
 	}
 
@@ -59,11 +59,11 @@ func (_m *ITaskStore) GetById(id string) (*models.Task, error) {
 }
 
 // Insert provides a mock function with given fields: task
-func (_m *ITaskStore) Insert(task models.Task) error {
+func (_m *ITaskStore) Insert(task types.Task) error {
 	ret := _m.Called(task)
 
 	var r0 error
-	if rf, ok := ret.Get(0).(func(models.Task) error); ok {
+	if rf, ok := ret.Get(0).(func(types.Task) error); ok {
 		r0 = rf(task)
 	} else {
 		r0 = ret.Error(0)
@@ -73,11 +73,11 @@ func (_m *ITaskStore) Insert(task models.Task) error {
 }
 
 // Update provides a mock function with given fields: id, updatedTask
-func (_m *ITaskStore) Update(id string, updatedTask models.UpdatedTask) error {
+func (_m *ITaskStore) Update(id string, updatedTask types.UpdatedTask) error {
 	ret := _m.Called(id, updatedTask)
 
 	var r0 error
-	if rf, ok := ret.Get(0).(func(string, models.UpdatedTask) error); ok {
+	if rf, ok := ret.Get(0).(func(string, types.UpdatedTask) error); ok {
 		r0 = rf(id, updatedTask)
 	} else {
 		r0 = ret.Error(0)
@@ -87,11 +87,11 @@ func (_m *ITaskStore) Update(id string, updatedTask models.UpdatedTask) error {
 }
 
 // UpdateStatus provides a mock function with given fields: id, status
-func (_m *ITaskStore) UpdateStatus(id string, status models.TaskStatus) error {
+func (_m *ITaskStore) UpdateStatus(id string, status types.TaskStatus) error {
 	ret := _m.Called(id, status)
 
 	var r0 error
-	if rf, ok := ret.Get(0).(func(string, models.TaskStatus) error); ok {
+	if rf, ok := ret.Get(0).(func(string, types.TaskStatus) error); ok {
 		r0 = rf(id, status)
 	} else {
 		r0 = ret.Error(0)

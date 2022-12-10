@@ -3,7 +3,7 @@
 package mocks
 
 import (
-	models "github.com/J-Obog/tasket/src/models"
+	types "github.com/J-Obog/tasket/src/types"
 	mock "github.com/stretchr/testify/mock"
 )
 
@@ -27,15 +27,15 @@ func (_m *IUserStore) Delete(id string) error {
 }
 
 // GetByEmail provides a mock function with given fields: email
-func (_m *IUserStore) GetByEmail(email string) (*models.User, error) {
+func (_m *IUserStore) GetByEmail(email string) (*types.User, error) {
 	ret := _m.Called(email)
 
-	var r0 *models.User
-	if rf, ok := ret.Get(0).(func(string) *models.User); ok {
+	var r0 *types.User
+	if rf, ok := ret.Get(0).(func(string) *types.User); ok {
 		r0 = rf(email)
 	} else {
 		if ret.Get(0) != nil {
-			r0 = ret.Get(0).(*models.User)
+			r0 = ret.Get(0).(*types.User)
 		}
 	}
 
@@ -50,15 +50,15 @@ func (_m *IUserStore) GetByEmail(email string) (*models.User, error) {
 }
 
 // GetById provides a mock function with given fields: id
-func (_m *IUserStore) GetById(id string) (*models.User, error) {
+func (_m *IUserStore) GetById(id string) (*types.User, error) {
 	ret := _m.Called(id)
 
-	var r0 *models.User
-	if rf, ok := ret.Get(0).(func(string) *models.User); ok {
+	var r0 *types.User
+	if rf, ok := ret.Get(0).(func(string) *types.User); ok {
 		r0 = rf(id)
 	} else {
 		if ret.Get(0) != nil {
-			r0 = ret.Get(0).(*models.User)
+			r0 = ret.Get(0).(*types.User)
 		}
 	}
 
@@ -73,11 +73,11 @@ func (_m *IUserStore) GetById(id string) (*models.User, error) {
 }
 
 // Insert provides a mock function with given fields: user
-func (_m *IUserStore) Insert(user models.User) error {
+func (_m *IUserStore) Insert(user types.User) error {
 	ret := _m.Called(user)
 
 	var r0 error
-	if rf, ok := ret.Get(0).(func(models.User) error); ok {
+	if rf, ok := ret.Get(0).(func(types.User) error); ok {
 		r0 = rf(user)
 	} else {
 		r0 = ret.Error(0)

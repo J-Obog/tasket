@@ -3,7 +3,7 @@
 package mocks
 
 import (
-	models "github.com/J-Obog/tasket/src/models"
+	types "github.com/J-Obog/tasket/src/types"
 	mock "github.com/stretchr/testify/mock"
 )
 
@@ -13,11 +13,11 @@ type ITaskManager struct {
 }
 
 // CreateTask provides a mock function with given fields: userId, newTask
-func (_m *ITaskManager) CreateTask(userId string, newTask models.NewTask) error {
+func (_m *ITaskManager) CreateTask(userId string, newTask types.NewTask) error {
 	ret := _m.Called(userId, newTask)
 
 	var r0 error
-	if rf, ok := ret.Get(0).(func(string, models.NewTask) error); ok {
+	if rf, ok := ret.Get(0).(func(string, types.NewTask) error); ok {
 		r0 = rf(userId, newTask)
 	} else {
 		r0 = ret.Error(0)
@@ -27,15 +27,15 @@ func (_m *ITaskManager) CreateTask(userId string, newTask models.NewTask) error 
 }
 
 // GetTaskById provides a mock function with given fields: id
-func (_m *ITaskManager) GetTaskById(id string) (*models.Task, error) {
+func (_m *ITaskManager) GetTaskById(id string) (*types.Task, error) {
 	ret := _m.Called(id)
 
-	var r0 *models.Task
-	if rf, ok := ret.Get(0).(func(string) *models.Task); ok {
+	var r0 *types.Task
+	if rf, ok := ret.Get(0).(func(string) *types.Task); ok {
 		r0 = rf(id)
 	} else {
 		if ret.Get(0) != nil {
-			r0 = ret.Get(0).(*models.Task)
+			r0 = ret.Get(0).(*types.Task)
 		}
 	}
 
@@ -50,20 +50,20 @@ func (_m *ITaskManager) GetTaskById(id string) (*models.Task, error) {
 }
 
 // GetTasksByFilter provides a mock function with given fields: userId, options
-func (_m *ITaskManager) GetTasksByFilter(userId string, options models.TaskOptions) ([]models.Task, error) {
+func (_m *ITaskManager) GetTasksByFilter(userId string, options types.TaskOptions) ([]types.Task, error) {
 	ret := _m.Called(userId, options)
 
-	var r0 []models.Task
-	if rf, ok := ret.Get(0).(func(string, models.TaskOptions) []models.Task); ok {
+	var r0 []types.Task
+	if rf, ok := ret.Get(0).(func(string, types.TaskOptions) []types.Task); ok {
 		r0 = rf(userId, options)
 	} else {
 		if ret.Get(0) != nil {
-			r0 = ret.Get(0).([]models.Task)
+			r0 = ret.Get(0).([]types.Task)
 		}
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(string, models.TaskOptions) error); ok {
+	if rf, ok := ret.Get(1).(func(string, types.TaskOptions) error); ok {
 		r1 = rf(userId, options)
 	} else {
 		r1 = ret.Error(1)
@@ -87,11 +87,11 @@ func (_m *ITaskManager) StopTask(id string) error {
 }
 
 // UpdateTask provides a mock function with given fields: id, updatedTask
-func (_m *ITaskManager) UpdateTask(id string, updatedTask models.UpdatedTask) error {
+func (_m *ITaskManager) UpdateTask(id string, updatedTask types.UpdatedTask) error {
 	ret := _m.Called(id, updatedTask)
 
 	var r0 error
-	if rf, ok := ret.Get(0).(func(string, models.UpdatedTask) error); ok {
+	if rf, ok := ret.Get(0).(func(string, types.UpdatedTask) error); ok {
 		r0 = rf(id, updatedTask)
 	} else {
 		r0 = ret.Error(0)
@@ -101,11 +101,11 @@ func (_m *ITaskManager) UpdateTask(id string, updatedTask models.UpdatedTask) er
 }
 
 // UpdateTaskStatus provides a mock function with given fields: id, status
-func (_m *ITaskManager) UpdateTaskStatus(id string, status models.TaskStatus) error {
+func (_m *ITaskManager) UpdateTaskStatus(id string, status types.TaskStatus) error {
 	ret := _m.Called(id, status)
 
 	var r0 error
-	if rf, ok := ret.Get(0).(func(string, models.TaskStatus) error); ok {
+	if rf, ok := ret.Get(0).(func(string, types.TaskStatus) error); ok {
 		r0 = rf(id, status)
 	} else {
 		r0 = ret.Error(0)

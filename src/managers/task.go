@@ -3,46 +3,52 @@ package managers
 import (
 	"fmt"
 
-	"github.com/J-Obog/tasket/src/logger"
-	"github.com/J-Obog/tasket/src/models"
-	"github.com/J-Obog/tasket/src/queue"
-	"github.com/J-Obog/tasket/src/store"
-	"github.com/J-Obog/tasket/src/utils"
+	"github.com/J-Obog/tasket/src/types"
 )
 
 type TaskManager struct {
-	taskStore store.ITaskStore
-	taskQueue queue.IQueue
-	logger    logger.ILogger
+	taskStore    types.ITaskStore
+	taskQueue    types.IQueue
+	logger       types.ILogger
+	uuidProvider types.IUUIDProvider
+	timeProvider types.ITimeProvider
 }
 
-func NewTaskManager(taskStore store.ITaskStore, taskQueue queue.IQueue, logger logger.ILogger) *TaskManager {
+func NewTaskManager(
+	taskStore types.ITaskStore,
+	taskQueue types.IQueue,
+	logger types.ILogger,
+	uuidProvider types.IUUIDProvider,
+	timeProvider types.ITimeProvider,
+) *TaskManager {
 	return &TaskManager{
-		taskStore: taskStore,
-		taskQueue: taskQueue,
-		logger:    logger,
+		taskStore:    taskStore,
+		taskQueue:    taskQueue,
+		logger:       logger,
+		uuidProvider: uuidProvider,
+		timeProvider: timeProvider,
 	}
 }
 
-func (this *TaskManager) GetTaskById(id string) (*models.Task, error) {
+func (this *TaskManager) GetTaskById(id string) (*types.Task, error) {
 	return this.taskStore.GetById(id)
 }
 
-func (this *TaskManager) GetTasksByFilter(userId string, options models.TaskOptions) ([]models.Task, error) {
+func (this *TaskManager) GetTasksByFilter(userId string, options types.TaskOptions) ([]types.Task, error) {
 	return this.taskStore.GetByFilter(userId, options)
 }
 
-func (this *TaskManager) UpdateTask(id string, updatedTask models.UpdatedTask) error {
+func (this *TaskManager) UpdateTask(id string, updatedTask types.UpdatedTask) error {
 	return this.taskStore.Update(id, updatedTask)
 }
 
-func (this *TaskManager) UpdateTaskStatus(id string, status models.TaskStatus) error {
+func (this *TaskManager) UpdateTaskStatus(id string, status types.TaskStatus) error {
 	return this.taskStore.UpdateStatus(id, status)
 }
 
 func (this *TaskManager) StopTask(id string) error {
-	event := queue.TaskStoppedEvent{
-		Type:   queue.EventType_TASK_STOPPED,
+	event := types.TaskStoppedEvent{
+		Type:   types.EventType_TASK_STOPPED,
 		TaskId: id,
 	}
 
@@ -55,16 +61,16 @@ func (this *TaskManager) StopTask(id string) error {
 	return nil
 }
 
-func (this *TaskManager) CreateTask(userId string, newTask models.NewTask) error {
-	id := utils.GenerateUUID()
-	now := utils.TimeNow()
+func (this *TaskManager) CreateTask(userId string, newTask types.NewTask) error {
+	id := this.uuidProvider.UUID()
+	now := this.timeProvider.Now()
 	config := newTask.Config
 
-	task := models.Task{
+	task := types.Task{
 		Id:          id,
 		UserId:      userId,
 		Name:        newTask.Name,
-		Status:      models.TaskStatus_PENDING,
+		Status:      types.TaskStatus_PENDING,
 		Config:      config,
 		StartedAt:   nil,
 		CompletedAt: nil,
@@ -77,8 +83,8 @@ func (this *TaskManager) CreateTask(userId string, newTask models.NewTask) error
 		return err
 	}
 
-	event := queue.TaskScheduledEvent{
-		Type:       queue.EventType_TASK_SCHEDULED,
+	event := types.TaskScheduledEvent{
+		Type:       types.EventType_TASK_SCHEDULED,
 		TaskId:     id,
 		TaskConfig: config,
 	}

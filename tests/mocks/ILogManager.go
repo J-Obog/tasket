@@ -3,7 +3,7 @@
 package mocks
 
 import (
-	models "github.com/J-Obog/tasket/src/models"
+	types "github.com/J-Obog/tasket/src/types"
 	mock "github.com/stretchr/testify/mock"
 )
 
@@ -13,25 +13,25 @@ type ILogManager struct {
 }
 
 // CreateLog provides a mock function with given fields: taskId, logReq
-func (_m *ILogManager) CreateLog(taskId string, logReq models.NewLog) {
+func (_m *ILogManager) CreateLog(taskId string, logReq types.NewLog) {
 	_m.Called(taskId, logReq)
 }
 
 // GetLogsByFilter provides a mock function with given fields: taskId, filter
-func (_m *ILogManager) GetLogsByFilter(taskId string, filter models.LogOptions) ([]models.Log, error) {
+func (_m *ILogManager) GetLogsByFilter(taskId string, filter types.LogOptions) ([]types.Log, error) {
 	ret := _m.Called(taskId, filter)
 
-	var r0 []models.Log
-	if rf, ok := ret.Get(0).(func(string, models.LogOptions) []models.Log); ok {
+	var r0 []types.Log
+	if rf, ok := ret.Get(0).(func(string, types.LogOptions) []types.Log); ok {
 		r0 = rf(taskId, filter)
 	} else {
 		if ret.Get(0) != nil {
-			r0 = ret.Get(0).([]models.Log)
+			r0 = ret.Get(0).([]types.Log)
 		}
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(string, models.LogOptions) error); ok {
+	if rf, ok := ret.Get(1).(func(string, types.LogOptions) error); ok {
 		r1 = rf(taskId, filter)
 	} else {
 		r1 = ret.Error(1)
@@ -41,15 +41,15 @@ func (_m *ILogManager) GetLogsByFilter(taskId string, filter models.LogOptions) 
 }
 
 // GetLogsByTask provides a mock function with given fields: taskId
-func (_m *ILogManager) GetLogsByTask(taskId string) ([]models.Log, error) {
+func (_m *ILogManager) GetLogsByTask(taskId string) ([]types.Log, error) {
 	ret := _m.Called(taskId)
 
-	var r0 []models.Log
-	if rf, ok := ret.Get(0).(func(string) []models.Log); ok {
+	var r0 []types.Log
+	if rf, ok := ret.Get(0).(func(string) []types.Log); ok {
 		r0 = rf(taskId)
 	} else {
 		if ret.Get(0) != nil {
-			r0 = ret.Get(0).([]models.Log)
+			r0 = ret.Get(0).([]types.Log)
 		}
 	}
 

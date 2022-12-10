@@ -5,71 +5,56 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/J-Obog/tasket/src/managers"
-	"github.com/J-Obog/tasket/src/models"
-	"github.com/J-Obog/tasket/src/rest"
+	"github.com/J-Obog/tasket/src/types"
 )
 
 type UserResource struct {
-	userManager managers.IUserManager
+	userManager types.IUserManager
 }
 
-func NewUserResource(userManager managers.IUserManager) *UserResource {
+func NewUserResource(userManager types.IUserManager) *UserResource {
 	return &UserResource{
 		userManager: userManager,
 	}
 }
 
-func (this *UserResource) GetUser(req rest.RestRequest) (rest.RestResponse, int) {
-	id := rest.UserId(req.Metadata)
+func (this *UserResource) GetUser(req types.RestRequest) types.RestResponse {
+	id := UserId(req.Metadata)
 
 	user, err := this.userManager.GetUserById(id)
 
 	if err != nil {
-		return rest.ServerErrorResponse(), http.StatusInternalServerError
+		return ServerErrorResponse()
 	}
 
 	if user == nil {
-		res := rest.RestResponse{
-			Error: rest.RestError{
-				Type:   "resource not found",
-				Detail: fmt.Sprintf("User could not be found"),
-			},
-		}
-
-		return res, http.StatusNotFound
+		resErr := MakeError("resource not found", fmt.Sprintf("User could not be found"))
+		return MakeResponse(&resErr, http.StatusNotFound)
 	}
 
-	res := rest.RestResponse{
-		Data: &user,
-	}
-
-	return res, http.StatusOK
+	return MakeResponse(&user, http.StatusOK)
 }
 
-func (this *UserResource) DeleteUser(req rest.RestRequest) (rest.RestResponse, int) {
-	id := rest.UserId(req.Metadata)
+func (this *UserResource) DeleteUser(req types.RestRequest) types.RestResponse {
+	id := UserId(req.Metadata)
 
 	err := this.userManager.DeleteUser(id)
 
 	if err != nil {
-		return rest.ServerErrorResponse(), http.StatusInternalServerError
+		return ServerErrorResponse()
 	}
 
-	res := rest.RestResponse{
-		Message: "User deleted successfully",
-	}
-
-	return res, http.StatusOK
+	msg := MakeMessage("User deleted successfully")
+	return MakeResponse(&msg, http.StatusOK)
 }
 
-func (this *UserResource) CreateUser(req rest.RestRequest) (rest.RestResponse, int) {
-	var newUser models.NewUser
+func (this *UserResource) CreateUser(req types.RestRequest) types.RestResponse {
+	var newUser types.NewUser
 
 	err := json.Unmarshal(req.Body, &newUser)
 
 	if err != nil {
-		return rest.ServerErrorResponse(), http.StatusInternalServerError
+		return ServerErrorResponse()
 	}
 
 	//validate user request
@@ -77,12 +62,9 @@ func (this *UserResource) CreateUser(req rest.RestRequest) (rest.RestResponse, i
 	err = this.userManager.CreateUser(newUser)
 
 	if err != nil {
-		return rest.ServerErrorResponse(), http.StatusInternalServerError
+		return ServerErrorResponse()
 	}
 
-	res := rest.RestResponse{
-		Message: "User created successfully",
-	}
-
-	return res, http.StatusOK
+	msg := MakeMessage("User created successfully")
+	return MakeResponse(&msg, http.StatusOK)
 }

@@ -3,7 +3,7 @@
 package mocks
 
 import (
-	models "github.com/J-Obog/tasket/src/models"
+	types "github.com/J-Obog/tasket/src/types"
 	mock "github.com/stretchr/testify/mock"
 )
 
@@ -13,20 +13,20 @@ type ILogStore struct {
 }
 
 // GetByFilter provides a mock function with given fields: taskId, options
-func (_m *ILogStore) GetByFilter(taskId string, options models.LogOptions) ([]models.Log, error) {
+func (_m *ILogStore) GetByFilter(taskId string, options types.LogOptions) ([]types.Log, error) {
 	ret := _m.Called(taskId, options)
 
-	var r0 []models.Log
-	if rf, ok := ret.Get(0).(func(string, models.LogOptions) []models.Log); ok {
+	var r0 []types.Log
+	if rf, ok := ret.Get(0).(func(string, types.LogOptions) []types.Log); ok {
 		r0 = rf(taskId, options)
 	} else {
 		if ret.Get(0) != nil {
-			r0 = ret.Get(0).([]models.Log)
+			r0 = ret.Get(0).([]types.Log)
 		}
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(string, models.LogOptions) error); ok {
+	if rf, ok := ret.Get(1).(func(string, types.LogOptions) error); ok {
 		r1 = rf(taskId, options)
 	} else {
 		r1 = ret.Error(1)
@@ -36,15 +36,15 @@ func (_m *ILogStore) GetByFilter(taskId string, options models.LogOptions) ([]mo
 }
 
 // GetByTask provides a mock function with given fields: taskId
-func (_m *ILogStore) GetByTask(taskId string) ([]models.Log, error) {
+func (_m *ILogStore) GetByTask(taskId string) ([]types.Log, error) {
 	ret := _m.Called(taskId)
 
-	var r0 []models.Log
-	if rf, ok := ret.Get(0).(func(string) []models.Log); ok {
+	var r0 []types.Log
+	if rf, ok := ret.Get(0).(func(string) []types.Log); ok {
 		r0 = rf(taskId)
 	} else {
 		if ret.Get(0) != nil {
-			r0 = ret.Get(0).([]models.Log)
+			r0 = ret.Get(0).([]types.Log)
 		}
 	}
 
@@ -59,11 +59,11 @@ func (_m *ILogStore) GetByTask(taskId string) ([]models.Log, error) {
 }
 
 // Insert provides a mock function with given fields: log
-func (_m *ILogStore) Insert(log models.Log) error {
+func (_m *ILogStore) Insert(log types.Log) error {
 	ret := _m.Called(log)
 
 	var r0 error
-	if rf, ok := ret.Get(0).(func(models.Log) error); ok {
+	if rf, ok := ret.Get(0).(func(types.Log) error); ok {
 		r0 = rf(log)
 	} else {
 		r0 = ret.Error(0)

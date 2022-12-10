@@ -1,35 +1,36 @@
 package managers
 
-import (
-	"github.com/J-Obog/tasket/src/models"
-	"github.com/J-Obog/tasket/src/store"
-	"github.com/J-Obog/tasket/src/utils"
-)
+import "github.com/J-Obog/tasket/src/types"
 
 type UserManager struct {
-	userStore store.IUserStore
+	userStore    types.IUserStore
+	timeProvider types.ITimeProvider
+	uuidProvider types.IUUIDProvider
 }
 
-func NewUserManager(userStore store.IUserStore) *UserManager {
+func NewUserManager(userStore types.IUserStore, timeProvider types.ITimeProvider, uuidProvider types.IUUIDProvider) *UserManager {
 	return &UserManager{
-		userStore: userStore,
+		userStore:    userStore,
+		timeProvider: timeProvider,
+		uuidProvider: uuidProvider,
 	}
 }
 
-func (this *UserManager) GetUserById(id string) (*models.User, error) {
+func (this *UserManager) GetUserById(id string) (*types.User, error) {
 	return this.userStore.GetById(id)
 }
 
-func (this *UserManager) GetUserByEmail(email string) (*models.User, error) {
+func (this *UserManager) GetUserByEmail(email string) (*types.User, error) {
 	return this.userStore.GetByEmail(email)
 }
 
-func (this *UserManager) CreateUser(userReq models.NewUser) error {
-	now := utils.TimeNow()
-	id := utils.GenerateUUID()
-	hashedPswd := utils.GenerateHash(userReq.Password)
+//todo implement hashing
+func (this *UserManager) CreateUser(userReq types.NewUser) error {
+	now := this.timeProvider.Now()
+	id := this.uuidProvider.UUID()
+	hashedPswd := []byte{} //utils.GenerateHash(userReq.Password)
 
-	user := models.User{
+	user := types.User{
 		Id:        id,
 		Email:     userReq.Email,
 		Password:  hashedPswd,
