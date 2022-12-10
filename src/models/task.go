@@ -4,10 +4,10 @@ type TaskStatus uint
 
 const (
 	TaskStatus_UNKNOWN   TaskStatus = 0
-	TaskStatus_COMPLETED            = 1
-	TaskStatus_STOPPED              = 2
-	TaskStatus_RUNNING              = 3
-	TaskStatus_PENDING              = 4
+	TaskStatus_COMPLETED TaskStatus = 1
+	TaskStatus_STOPPED   TaskStatus = 2
+	TaskStatus_RUNNING   TaskStatus = 3
+	TaskStatus_PENDING   TaskStatus = 4
 )
 
 type TaskConfig struct {

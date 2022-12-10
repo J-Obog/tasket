@@ -6,6 +6,10 @@ import (
 	"github.com/segmentio/ksuid"
 )
 
+type ITimeProvider interface {
+	Now() int64
+}
+
 func GenerateUUID() string {
 	return ksuid.New().String()
 }

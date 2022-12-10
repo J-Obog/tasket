@@ -4,8 +4,8 @@ type LogSource uint
 
 const (
 	LogSource_UNKNOWN LogSource = 0
-	LogSource_TASK              = 1
-	LogSource_SERVER            = 2
+	LogSource_TASK    LogSource = 1
+	LogSource_SERVER  LogSource = 2
 )
 
 type Log struct {

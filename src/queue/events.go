@@ -6,8 +6,8 @@ type EventType string
 
 const (
 	EventType_UNKNOWN        EventType = ""
-	EventType_TASK_SCHEDULED           = "task.scheduled"
-	EventType_TASK_STOPPED             = "task.stopped"
+	EventType_TASK_SCHEDULED EventType = "task.scheduled"
+	EventType_TASK_STOPPED   EventType = "task.stopped"
 )
 
 type TaskScheduledEvent struct {
