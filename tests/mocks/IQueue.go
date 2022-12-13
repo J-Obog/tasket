@@ -13,14 +13,16 @@ type IQueue struct {
 }
 
 // Pull provides a mock function with given fields:
-func (_m *IQueue) Pull() (types.EventMessage, error) {
+func (_m *IQueue) Pull() (*types.EventMessage, error) {
 	ret := _m.Called()
 
-	var r0 types.EventMessage
-	if rf, ok := ret.Get(0).(func() types.EventMessage); ok {
+	var r0 *types.EventMessage
+	if rf, ok := ret.Get(0).(func() *types.EventMessage); ok {
 		r0 = rf()
 	} else {
-		r0 = ret.Get(0).(types.EventMessage)
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*types.EventMessage)
+		}
 	}
 
 	var r1 error

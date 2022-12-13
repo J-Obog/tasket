@@ -4,7 +4,12 @@ import (
 	"context"
 	"encoding/json"
 
+	"github.com/J-Obog/tasket/src/types"
 	amqp "github.com/rabbitmq/amqp091-go"
+)
+
+const (
+	exchange string = "direct"
 )
 
 type RabbitMqQueue struct {
@@ -18,10 +23,10 @@ func NewRabbitMqQueue(channel *amqp.Channel, name string) *RabbitMqQueue {
 	}
 }
 
-func (this *RabbitMqQueue) Push(serializable interface{}) error {
+func (this *RabbitMqQueue) Push(message types.EventMessage) error {
 	ctx := context.Background()
 
-	payload, err := json.Marshal(serializable)
+	payload, err := json.Marshal(message)
 
 	if err != nil {
 		return err
@@ -31,10 +36,10 @@ func (this *RabbitMqQueue) Push(serializable interface{}) error {
 		Body: payload,
 	}
 
-	return this.channel.PublishWithContext(ctx, "direct", this.name, true, false, msg)
+	return this.channel.PublishWithContext(ctx, exchange, this.name, true, false, msg)
 }
 
-func (this *RabbitMqQueue) Pull() ([]byte, error) {
+func (this *RabbitMqQueue) Pull() (*types.EventMessage, error) {
 	msgChan, err := this.channel.Consume(this.name, "", true, false, false, false, nil)
 
 	if err != nil {
@@ -42,5 +47,14 @@ func (this *RabbitMqQueue) Pull() ([]byte, error) {
 	}
 
 	msg := <-msgChan
-	return msg.Body, err
+
+	var message *types.EventMessage
+
+	err = json.Unmarshal(msg.Body, &message)
+
+	if err != nil {
+		return nil, nil
+	}
+
+	return message, err
 }

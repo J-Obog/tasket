@@ -12,9 +12,9 @@ type ILogManager struct {
 	mock.Mock
 }
 
-// CreateLog provides a mock function with given fields: taskId, logReq
-func (_m *ILogManager) CreateLog(taskId string, logReq types.NewLog) {
-	_m.Called(taskId, logReq)
+// CreateLog provides a mock function with given fields: taskId, newLog
+func (_m *ILogManager) CreateLog(taskId string, newLog types.NewLog) {
+	_m.Called(taskId, newLog)
 }
 
 // GetLogsByFilter provides a mock function with given fields: taskId, filter

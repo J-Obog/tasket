@@ -14,7 +14,7 @@ type ILogger interface {
 
 type IQueue interface {
 	Push(message EventMessage) error
-	Pull() (EventMessage, error)
+	Pull() (*EventMessage, error)
 }
 
 type IServer interface {
@@ -36,7 +36,7 @@ type IUUIDProvider interface {
 type ILogManager interface {
 	GetLogsByTask(taskId string) ([]Log, error)
 	GetLogsByFilter(taskId string, filter LogOptions) ([]Log, error)
-	CreateLog(taskId string, logReq NewLog)
+	CreateLog(taskId string, newLog NewLog)
 }
 
 type ITaskManager interface {
