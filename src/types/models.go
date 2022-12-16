@@ -1,41 +1,22 @@
 package types
 
-type RestRequest struct {
-	Url         string
-	UrlParams   map[string]interface{}
-	QueryParams map[string]interface{}
-	Metadata    map[string]interface{}
-	Body        []byte
-}
+type LogSource uint
 
-type RestError struct {
-	Type   string `json:"type"`
-	Detail string `json:"detail"`
-}
+const (
+	LogSource_UNKNOWN LogSource = 0
+	LogSource_TASK    LogSource = 1
+	LogSource_SERVER  LogSource = 2
+)
 
-type RestMessage struct {
-	Message string `json:"message"`
-}
+type TaskStatus uint
 
-type RestResponse struct {
-	Data   interface{}
-	Status int64
-}
-
-type EventMessage struct {
-	Type      EventType   `json:"type"`
-	Data      interface{} `json:"data"`
-	Timestamp int64       `json:"timestamp"`
-}
-
-type TaskScheduledMessage struct {
-	TaskId     string     `json:"taskId"`
-	TaskConfig TaskConfig `json:"taskConfig"`
-}
-
-type TaskStoppedMessage struct {
-	TaskId string `json:"taskId"`
-}
+const (
+	TaskStatus_UNKNOWN   TaskStatus = 0
+	TaskStatus_COMPLETED TaskStatus = 1
+	TaskStatus_STOPPED   TaskStatus = 2
+	TaskStatus_RUNNING   TaskStatus = 3
+	TaskStatus_PENDING   TaskStatus = 4
+)
 
 type Log struct {
 	Id        string    `json:"id"`
@@ -63,7 +44,7 @@ type LogOptions struct {
 type TaskConfig struct {
 	MaxTimeout int64             `json:"maxTimeout"`
 	MaxMemory  int64             `json:"maxMemory"`
-	Commands   []string          `json:"commands"`
+	Command    string            `json:"command"`
 	Environ    map[string]string `json:"environ"`
 	SourceMeta map[string]string `json:"sourceMeta"`
 }
