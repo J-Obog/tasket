@@ -1,9 +1,21 @@
 package config
 
+const (
+	taskQueueName string = "tasks"
+)
+
+type RedisConfig struct {
+	Address  string `json:"address"`
+	Username string `json:"username"`
+	Password string `json:"password"`
+}
+
+type RabbitMqConfig struct {
+	Address       string `json:"address"`
+	TaskQueueName string
+}
+
 type AppConfig struct {
-	RedisAddress    string `json:"redisAddress"`
-	RedisUsername   string `json:"redisUsername"`
-	RedisPassword   string `json:"redisPassword"`
-	RabbitmqAddress string `json:"rabbitmqAddress"`
-	TaskQueueName   string `json:"taskQueueName"`
+	Redis    RedisConfig    `json:"redis"`
+	RabbitMq RabbitMqConfig `json:"rabbitMq"`
 }
