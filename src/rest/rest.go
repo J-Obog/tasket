@@ -1,4 +1,4 @@
-package types
+package rest
 
 type RestRequest struct {
 	Url         string

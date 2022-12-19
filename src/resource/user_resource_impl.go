@@ -1,27 +1,27 @@
 package resource
 
 import (
-	"encoding/json"
 	"fmt"
 	"net/http"
 
-	"github.com/J-Obog/tasket/src/types"
+	"github.com/J-Obog/tasket/src/managers"
+	"github.com/J-Obog/tasket/src/rest"
 )
 
 type UserResourceImpl struct {
-	userManager types.IUserManager
+	userManager managers.UserManager
 }
 
-func NewUserResource(userManager types.IUserManager) *UserResource {
-	return &UserResource{
+func NewUserResource(userManager managers.UserManager) *UserResourceImpl {
+	return &UserResourceImpl{
 		userManager: userManager,
 	}
 }
 
-func (this *UserResource) GetUser(req types.RestRequest) types.RestResponse {
+func (this *UserResourceImpl) Get(req rest.RestRequest) rest.RestResponse {
 	id := UserId(req.Metadata)
 
-	user, err := this.userManager.GetUserById(id)
+	user, err := this.userManager.Get(id)
 
 	if err != nil {
 		return ServerErrorResponse()
@@ -35,10 +35,10 @@ func (this *UserResource) GetUser(req types.RestRequest) types.RestResponse {
 	return MakeResponse(&user, http.StatusOK)
 }
 
-func (this *UserResource) DeleteUser(req types.RestRequest) types.RestResponse {
+func (this *UserResourceImpl) Delete(req rest.RestRequest) rest.RestResponse {
 	id := UserId(req.Metadata)
 
-	err := this.userManager.DeleteUser(id)
+	err := this.userManager.Delete(id)
 
 	if err != nil {
 		return ServerErrorResponse()
@@ -48,8 +48,8 @@ func (this *UserResource) DeleteUser(req types.RestRequest) types.RestResponse {
 	return MakeResponse(&msg, http.StatusOK)
 }
 
-func (this *UserResource) CreateUser(req types.RestRequest) types.RestResponse {
-	var newUser types.NewUser
+func (this *UserResourceImpl) Create(req rest.RestRequest) rest.RestResponse {
+	/*var newUser types.NewUser
 
 	err := json.Unmarshal(req.Body, &newUser)
 
@@ -65,6 +65,6 @@ func (this *UserResource) CreateUser(req types.RestRequest) types.RestResponse {
 		return ServerErrorResponse()
 	}
 
-	msg := MakeMessage("User created successfully")
-	return MakeResponse(&msg, http.StatusOK)
+	msg := MakeMessage("User created successfully")*/
+	return MakeResponse(nil, http.StatusOK)
 }
