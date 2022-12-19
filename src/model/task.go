@@ -35,8 +35,8 @@ type TaskUpdate struct {
 }
 
 type TaskOptions struct {
-	Name          *string     `json:"name"`
-	Status        *TaskStatus `json:"status"`
-	CreatedAfter  *int64      `json:"createdAfter"`
-	CreatedBefore *int64      `json:"createdBefore"`
+	Name          *string
+	Status        *TaskStatus
+	CreatedAfter  *int64
+	CreatedBefore *int64
 }

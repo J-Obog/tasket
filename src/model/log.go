@@ -17,7 +17,7 @@ type Log struct {
 }
 
 type LogOptions struct {
-	Source        *LogSource `json:"source"`
-	CreatedAfter  *int64     `json:"createdAfter"`
-	CreatedBefore *int64     `json:"createdBefore"`
+	Source        *LogSource
+	CreatedAfter  *int64
+	CreatedBefore *int64
 }
