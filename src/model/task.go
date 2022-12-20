@@ -11,8 +11,6 @@ const (
 )
 
 type TaskConfig struct {
-	MaxTimeout int64             `json:"maxTimeout"`
-	MaxMemory  int64             `json:"maxMemory"`
 	Command    string            `json:"command"`
 	Environ    map[string]string `json:"environ"`
 	SourceMeta map[string]string `json:"sourceMeta"`
